@@ -33,7 +33,7 @@ ensemble_df = load_vcf(ensemble_file, samples, "Ensemble", ensemble_dict, loci)
 ############### Load capillary ###########
 cap = pd.read_csv(psizes_file)
 cap = pd.melt(cap, id_vars=["PrimerID","RefProductSize"], value_vars=samples, \
-        var_name="sample", value_name="Cap")
+        var_name="sample", value_name="Prd")
 cap["batch"] = cap.apply(lambda x: "PG" if x["sample"] in pg_samples else "Coriell", 1)
 
 ############### Learn offsets ###########
@@ -41,11 +41,25 @@ offsets = learn_offsets(cap, hipstr_df, gangstr_df, loci)
 
 ############### Merge everything ###########
 merged = pd.merge(cap, offsets, on=["PrimerID","batch"])
-hipstr_df["sample"] = hipstr_df["SampleID"]
-gangstr_df["sample"] = gangstr_df["SampleID"]
+merged["SampleID"] = merged["sample"]
 
 merged = pd.merge(merged, hipstr_df, how="left", on=["PrimerID","SampleID"])
 merged = pd.merge(merged, gangstr_df, how="left", on=["PrimerID","SampleID"])
+merged = pd.merge(merged, ensemble_df, how="left", on=["PrimerID","SampleID"])
+merged["Cap.Binned"] = merged.apply(lambda x: GetBinnedAlleles(x["PrimerID"], x["Prd"], x["sample"]), 1)
+merged["Cap"] = merged.apply(GetCap, 1)
 
-print(merged.head())
+merged["match.hipstr"] = GetMatch(merged["HipSTR"], merged["Cap.Binned"])
+merged["match.gangstr"] = GetMatch(merged["GangSTR"], merged["Cap.Binned"])
+merged["match.ensemble"] = GetMatch(merged["Ensemble"], merged["Cap.Binned"])
+
+print(merged[["Cap.Binned","HipSTR","GangSTR","Ensemble", \
+              "match.hipstr","match.gangstr","match.ensemble"]])
+
+merged[["PrimerID","SampleID","RefProductSize","period", \
+        "offset","offset_hipstr","offset_gangstr", \
+        "Prd","Cap","Cap.Binned", \
+        "HipSTR","GangSTR","Ensemble",
+        "match.hipstr", "match.gangstr", "match.ensemble"]].to_csv("TableS3-WGSvsCapillary.csv")
+
 
