@@ -42,39 +42,6 @@ rmloci = ["AR","NOS1","FMR1","CNBP","chr12_131901040_T","chr12_75962280_T","chr1
     "chr4_176019003_T", "AFF2","ARX","chr7_103989357_CCG","RUNX2","chr12_4096182_TTCC","PHOX2B","HOXD13","PAPBN1"]
 ref_prod_sizes = ref_prod_sizes[~ref_prod_sizes["PrimerID"].isin(rmloci)]
 
-# Data for call-level comparison
-loci_ = []
-samples_ = []
-capraw_ = []
-periods_ = []
-
-for PrimerID in sorted(set(ref_prod_sizes["PrimerID"])):
-    ref_prod_size = ref_prod_sizes[ref_prod_sizes["PrimerID"]==PrimerID]["ProductSize"].values[0]
-    period = len(loci[loci["LocusID"]==PrimerID]["Motif"].values[0])
-    samp_loc_prod_sizes = samp_prod_sizes[samp_prod_sizes["PrimerID"]==PrimerID]
-
-    allsamples = list(samp_loc_prod_sizes["SampleID"])
-    for sample in allsamples:
-        # Extract capillary data
-        cap_prod_sizes = list(samp_loc_prod_sizes.set_index('SampleID').loc[sample][['prd_size_1', 'prd_size_2']])
-        if "prd_size_1" in cap_prod_sizes: continue
-        gb_cap = sorted([float(i) - float(ref_prod_size) for i in cap_prod_sizes])
-        if sum(np.isnan(gb_cap)) > 0: continue 
-
-        loci_.append(PrimerID)
-        periods_.append(period)
-
-        X_raw = sorted([float(i) for i in cap_prod_sizes])
-        capraw_.append("%s,%s"%(X_raw[0], X_raw[1]))
-
-        samples_.append(sample)
-
-calldata = pd.DataFrame({
-    "PrimerID": loci_,
-    "SampleID": samples_,
-    "Prd": capraw_
-    })
-
 ############### Write matrix of product sizes ###########
 
 psize_data = {} # PrimerID -> SampleID -> ProductSize
