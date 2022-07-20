@@ -17,5 +17,10 @@ DATADIR=/gymreklab-tscc/helia/ensembl
    TableS2-ProductSizes.csv \
    gangstr_cap_calls.txt \
    hipstr_cap_calls.txt \
-   ensemble_cap_calls.txt
+   ensemble_cap_calls.txt \
+   TableS3-Asuragen.csv
+
+# Merge the two Table S4s
+cat TableS4-WGSvsCapillary.csv > TableS4-WGSvsCapillary-combined.csv
+cat TableS4-WGSvsCapillary-Asuragen.csv | grep -v PrimerID >> TableS4-WGSvsCapillary-combined.csv
 ```

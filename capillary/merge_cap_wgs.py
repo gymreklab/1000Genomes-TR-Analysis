@@ -5,7 +5,7 @@ Learn offsets
 Output table to compare
 
 Usage:
-./merge_cap_wgs.py <product_sizes> <gangstr_calls> <hipstr_calls> <ensemble_calls>
+./merge_cap_wgs.py <product_sizes> <gangstr_calls> <hipstr_calls> <ensemble_calls> <asuragen calls>
 """
 
 import sys
@@ -15,6 +15,7 @@ try:
     gangstr_file = sys.argv[2]
     hipstr_file = sys.argv[3]
     ensemble_file = sys.argv[4]
+    asuragen_file = sys.argv[5]
 except:
     sys.stderr.write(__doc__)
     sys.exit(1)
@@ -53,9 +54,30 @@ merged["match.hipstr"] = GetMatch(merged["HipSTR"], merged["Cap.Binned"])
 merged["match.gangstr"] = GetMatch(merged["GangSTR"], merged["Cap.Binned"])
 merged["match.ensemble"] = GetMatch(merged["Ensemble"], merged["Cap.Binned"])
 
-merged[["PrimerID","SampleID","RefProductSize","period", \
+##### First output the non-asuragen ones
+merged_not_asuragen = merged[~merged["PrimerID"].isin(["HTT","C9orf72"])]
+printcols = ["PrimerID","SampleID","RefProductSize","period", \
         "Prd", "Cap.Binned", \
         "HipSTR","GangSTR","Ensemble",
-        "match.hipstr", "match.gangstr", "match.ensemble"]].to_csv("TableS3-WGSvsCapillary.csv", index=False)
+        "match.hipstr", "match.gangstr", "match.ensemble"]
+merged_not_asuragen[printcols].to_csv("TableS4-WGSvsCapillary.csv", index=False)
+
+#### Now deal with Asurgen ones
+keepcols = ["PrimerID","SampleID", "period","HipSTR","GangSTR","Ensemble"]
+merged_asuragen = merged[merged["PrimerID"].isin(["HTT","C9orf72"])][keepcols].copy()
+
+asuragen = pd.read_csv(asuragen_file)
+merged_asuragen = pd.merge(merged_asuragen, asuragen, how="left", on=["PrimerID","SampleID"])
+
+# Dummy columns
+for col in ["Prd","RefProductSize"]:
+    merged_asuragen[col] = np.nan
+
+merged_asuragen["Cap.Binned"] = merged_asuragen.apply(GetBinnedAsuragen, 1)
+merged_asuragen["match.hipstr"] = GetMatch(merged_asuragen["HipSTR"], merged_asuragen["Cap.Binned"])
+merged_asuragen["match.gangstr"] = GetMatch(merged_asuragen["GangSTR"], merged_asuragen["Cap.Binned"])
+merged_asuragen["match.ensemble"] = GetMatch(merged_asuragen["Ensemble"], merged_asuragen["Cap.Binned"])
+
+merged_asuragen.sort_values(["PrimerID","SampleID"])[printcols].to_csv("TableS4-WGSvsCapillary-Asuragen.csv", index=False)
 
 

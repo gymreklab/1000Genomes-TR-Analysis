@@ -437,3 +437,13 @@ def GetMatch(calls1, calls2):
             matches.append(np.nan)
         else: matches.append(calls1[i] == calls2[i])
     return matches
+
+def GetBinnedAsuragen(x):
+    alleles = [int(item) for item in x["Cap"].strip().split(",")]
+    if x["PrimerID"] == "C9orf72":
+        offset = 3
+    elif x["PrimerID"] == "HTT":
+        offset = 19
+    else: offset = None
+    alleles = [item-offset for item in alleles]
+    return "%s,%s"%(alleles[0], alleles[1])

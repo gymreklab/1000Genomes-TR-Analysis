@@ -39,7 +39,7 @@ ref_prod_sizes = LoadGSheet(gc.open("1000GenomesRepeatValidationDatabase").works
 
 rmloci = ["AR","NOS1","FMR1","CNBP","chr12_131901040_T","chr12_75962280_T","chr12_92269453_T", \
     "chr15_72443969_T","chr16_58599051_A","chr16_67644335_T","chr3_54501407_T", \
-    "chr4_176019003_T", "AFF2","ARX","chr7_103989357_CCG","RUNX2","chr12_4096182_TTCC","PHOX2B","HOXD13","PAPBN1"]
+          "chr4_176019003_T", "AFF2","ARX","chr7_103989357_CCG","RUNX2","chr12_4096182_TTCC","PHOX2B","HOXD13","PAPBN1", "SCA2"]
 ref_prod_sizes = ref_prod_sizes[~ref_prod_sizes["PrimerID"].isin(rmloci)]
 
 ############### Write matrix of product sizes ###########
@@ -67,3 +67,9 @@ for pr in primer_ids:
     items = [pr] + [psize_data[pr]["ref"]] + [psize_data[pr][sm] for sm in samples]
     outf.write(",".join([str(item) for item in items])+"\n")
 outf.close()
+
+############### Grab HTT/C9orf72/FMR1 separately (Asuragen) ###########
+asuragen = LoadGSheet(gc.open("1000GenomesRepeatValidationDatabase").worksheet("Asuragen-MGymrek"))
+asuragen["Cap"] = asuragen["Product size"].apply(lambda x: x.replace(" ", ""))
+asuragen = asuragen.drop_duplicates(subset=["PrimerID","SampleID"], keep="first")
+asuragen[["PrimerID","SampleID","Cap"]].sort_values(["PrimerID","SampleID"]).to_csv("TableS3-Asuragen.csv", index=False)
