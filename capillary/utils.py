@@ -58,7 +58,10 @@ coriell_samples = [
 
 ## Adjusting positions for each caller
 gang_dict = {
-    27573485:27573524
+    63912686:63912685,
+    87604288:87604283,
+    6936729:6936717,
+    27573524:27573529
 }
 
 hip_dict = {
@@ -178,7 +181,6 @@ def find_offset (X, Y, period):
     newY = [Y[i] for i in useind]
 
     if len(newX) == 0: return np.nan, np.nan, np.nan
-    # measure: diffs in sizes
     most_matches = -10
     best_diffs = 100000
     best_offset = -1000
@@ -193,8 +195,9 @@ def find_offset (X, Y, period):
         # Get diffs. Take top %percentile since we don't know how many calls are wrong
         diffs = [abs(x_plus_off[i]-newY[i]) for i in range(len(x_plus_off))]
         diff = np.max(sorted(diffs)[0:10]) #np.median(diffs)
-        
-        if diff < best_diffs:
+
+#        if diff < best_diffs:
+        if num_matches > most_matches:
             best_diffs = diff
             best_offset = offset
             most_matches = num_matches
@@ -249,7 +252,7 @@ def learn_offsets(cap, hipstr_calls, gangstr_calls, loci):
 
         offset_gstr, num_matches_gstr, diff_gstr = find_offset(X, Y_gstr, period)
         offset_hstr, num_matches_hstr, diff_hstr = find_offset(X, Y_hstr, period)
-        
+
         pg_ind = [i for i in range(len(allsamples)) if allsamples[i] in pg_samples]
         X_PG = [X[i] for i in pg_ind]
         Y_gstr_PG = [Y_gstr[i] for i in pg_ind]
@@ -263,7 +266,7 @@ def learn_offsets(cap, hipstr_calls, gangstr_calls, loci):
         Y_hstr_Coriell = [Y_hstr[i] for i in coriell_ind]
         offset_gstr_Coriell, num_matches_gstr_Coriell, diff_gstr_Coriell = find_offset(X_Coriell, Y_gstr_Coriell, period)
         offset_hstr_Coriell, num_matches_hstr_Coriell, diff_hstr_Coriell = find_offset(X_Coriell, Y_hstr_Coriell, period)
-
+        
         # Get overall offset
         if not np.isnan(offset_hstr):
             offset = offset_hstr
@@ -417,10 +420,11 @@ def GetBinnedSingleAllele(primer_id, psize, sampleid):
     return "."
 
 def GetCap(x):
-    cap_prod_sizes = [float(item) for item in x["Prd"].split("/")]
+    if x["PrimerID"]=="FXN": return "./."
+    cap_prod_sizes = [float(item)-x["RefProductSize"] for item in x["Prd"].split("/")]
     if len(cap_prod_sizes) != 2: return "./."
-    return "%s,%s"%((cap_prod_sizes[0]+x["offset"])/x["period"], \
-        (cap_prod_sizes[1]+x["offset"])/x["period"])
+    return "%s,%s"%(int(round((cap_prod_sizes[0]+x["offset"])/x["period"])), \
+                    int(round((cap_prod_sizes[1]+x["offset"])/x["period"])))
 
 def GetMatch(calls1, calls2):
     calls1 = list(calls1)

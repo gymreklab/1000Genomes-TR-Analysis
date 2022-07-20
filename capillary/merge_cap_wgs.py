@@ -53,13 +53,9 @@ merged["match.hipstr"] = GetMatch(merged["HipSTR"], merged["Cap.Binned"])
 merged["match.gangstr"] = GetMatch(merged["GangSTR"], merged["Cap.Binned"])
 merged["match.ensemble"] = GetMatch(merged["Ensemble"], merged["Cap.Binned"])
 
-print(merged[["Cap.Binned","HipSTR","GangSTR","Ensemble", \
-              "match.hipstr","match.gangstr","match.ensemble"]])
-
 merged[["PrimerID","SampleID","RefProductSize","period", \
-        "offset","offset_hipstr","offset_gangstr", \
-        "Prd","Cap","Cap.Binned", \
+        "Prd", "Cap.Binned", \
         "HipSTR","GangSTR","Ensemble",
-        "match.hipstr", "match.gangstr", "match.ensemble"]].to_csv("TableS3-WGSvsCapillary.csv")
+        "match.hipstr", "match.gangstr", "match.ensemble"]].to_csv("TableS3-WGSvsCapillary.csv", index=False)
 
 
