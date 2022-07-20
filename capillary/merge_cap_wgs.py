@@ -34,9 +34,18 @@ ensemble_df = load_vcf(ensemble_file, samples, "Ensemble", ensemble_dict, loci)
 cap = pd.read_csv(psizes_file)
 cap = pd.melt(cap, id_vars=["PrimerID","RefProductSize"], value_vars=samples, \
         var_name="sample", value_name="Cap")
-cap["batch"] = cap.apply(lambda x: x["sample"] in [pg_samples], 1)
+cap["batch"] = cap.apply(lambda x: "PG" if x["sample"] in pg_samples else "Coriell", 1)
 
 ############### Learn offsets ###########
 offsets = learn_offsets(cap, hipstr_df, gangstr_df, loci)
-offsets.to_csv(sys.stdout, sep=",")
+
+############### Merge everything ###########
+merged = pd.merge(cap, offsets, on=["PrimerID","batch"])
+hipstr_df["sample"] = hipstr_df["SampleID"]
+gangstr_df["sample"] = gangstr_df["SampleID"]
+
+merged = pd.merge(merged, hipstr_df, how="left", on=["PrimerID","SampleID"])
+merged = pd.merge(merged, gangstr_df, how="left", on=["PrimerID","SampleID"])
+
+print(merged.head())
 
