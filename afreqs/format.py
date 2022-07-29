@@ -25,23 +25,28 @@ except:
 motifs = pd.read_csv(knownfreqs, delim_whitespace=True, usecols=range(3))[["chrom","pos","motif"]]
 motifs.columns = ["chrom","start","motif"]
 
-def len_to_cn(freqs, period):
+def len_to_cn(freqs, period, is_htt=False):
     new_freqs = defaultdict(int)
     freqs = freqs.split(",")
     for freq in freqs:
         seq, num = freq.split(":")
-        cn = int(len(seq)/period)
+        if is_htt:
+            cn = int(seq.count("CAG")-1)
+        else:
+            cn = int(len(seq)/period)
         new_freqs[cn] += float(num)
     return ",".join([str(key)+":"+str(round(new_freqs[key],3)) for key in new_freqs])
 
 dfs = []
 for f in freqfiles:
     df = pd.read_csv(f, sep="\t")
-    pop = os.path.basename(f).replace(".tab","")
+    pop = os.path.basename(f).split(".")[0].split("-")[1]
     df = pd.merge(df, motifs, on=["chrom","start"])
-    df["freq_%s"%pop] = df.apply(lambda x: len_to_cn(x["afreq-1"], len(x["motif"])), 1)
+    df["is.htt"] = False
+    df.loc[df["start"]==3074877, "is.htt"] = True
+    df["freq_%s"%pop] = df.apply(lambda x: len_to_cn(x["afreq-1"], len(x["motif"]), is_htt=x["is.htt"]), 1)
     dfs.append(df[["chrom", "start", "end", "freq_%s"%pop]])
 
 ALL = reduce(lambda  left,right: pd.merge(left, right, on=['chrom','start','end'],
                                           how='outer'), dfs)
-ALL.to_csv("called_freqs_codis.tab", sep="\t", index=False)
+ALL.to_csv(sys.stdout, sep="\t", index=False)
