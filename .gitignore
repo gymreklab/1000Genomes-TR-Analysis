@@ -1,3 +1,8 @@
+# Generated files
+*.tab
+*pdfs/
+*freqs/
+
 # Data files
 *_cap_calls.txt
 
