@@ -8,6 +8,3 @@
 ./extract.sh disease
 ./format.py disease_afreqs.txt $(ls freqs/disease*.tab) > called_freqs_disease.tab
 ```
-
-Notes:
-* /storage/hziaeija/ensemble/notebooks/codis.ipynb # get called_freqs.txt for the notebook
