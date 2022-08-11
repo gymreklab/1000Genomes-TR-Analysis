@@ -2,20 +2,6 @@ from upsetplot import from_memberships
 from upsetplot import plot
 from matplotlib import pyplot
 
-
-methods = [0,0,0,0]
-gang_hip = 0
-adv_hip = 0
-eh_hip = 0
-gang_adv = 0
-gang_eh = 0
-eh_adv = 0
-gang_hip_adv = 0
-gang_hip_eh = 0
-hip_adv_eh = 0
-gang_adv_eh = 0
-gang_adv_eh_hip = 0
-
 dict = {"1|1|1|1":0, "1|1|1|0":0, "1|1|0|1":0, "1|0|1|1":0, "0|1|1|1":0,
         "1|1|0|0":0, "0|0|1|1":0, "1|0|1|0":0, "0|1|1|0":0, "0|1|0|1":0, "1|0|0|1":0, "0|0|0|1":0, "1|0|0|0":0,"0|1|0|0":0,"0|0|1|0":0 }
 
