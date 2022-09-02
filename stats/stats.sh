@@ -11,8 +11,8 @@
 
 # Getting statistics about genes and whole genome
 
-cd /projects/ps-gymreklab/helia/ensembl/experiments/coding_regions
+addr="/projects/ps-gymreklab/helia/ensembl/experiments/coding_regions"
 
-bcftools query -R intersect.txt -f '%CHROM\t%POS\t%PERIOD\t%ALT\n' /projects/ps-gymreklab/helia/ensembl/ensemble_out/merged_chr"$chr"_sorted_ver2.vcf.gz > info/gene_info_chr"$chr".txt
+bcftools query -R "$addr"/intersect.txt -f '%CHROM\t%POS\t%PERIOD\t%ALT\n' /projects/ps-gymreklab/helia/ensembl/ensemble_out/merged_chr"$chr"_sorted_ver2.vcf.gz > "$addr"/info/gene_info_chr"$chr".txt
 
-bcftools query  -f '%CHROM\t%POS\t%PERIOD\t%ALT\n' /projects/ps-gymreklab/helia/ensembl/ensemble_out/merged_chr"$chr"_sorted_ver2.vcf.gz > info/all_info_chr"$chr".txt
+bcftools query  -f '%CHROM\t%POS\t%PERIOD\t%ALT\n' /projects/ps-gymreklab/helia/ensembl/ensemble_out/merged_chr"$chr"_sorted_ver2.vcf.gz > "$addr"/info/all_info_chr"$chr".txt
