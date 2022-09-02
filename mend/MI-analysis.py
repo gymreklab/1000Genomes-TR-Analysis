@@ -46,6 +46,9 @@ def CheckMI(sample_GT, mother_GT, father_GT):
         return True
     return False
 
+def IsRef(gt):
+    return gt[0]==0 and gt[1]==0
+
 vcf = VCF(vcfpath, samples = list(all_ids))
 samples = vcf.samples
 
@@ -64,13 +67,14 @@ for variant in vcf:
         father_GT = variant.genotypes[father_index]
         if sample_GT[0] == -1 or mother_GT[0] == -1 or father_GT[0] == -1: # No call
             continue
-        n_families += 1
+        if IsRef(sample_GT) and IsRef(mother_GT) and IsRef(father_GT): # all homozygous ref
+            continue
+        gbs=("%s,%s,%s"%(variant.format("GB")[sample_index],
+                          variant.format("GB")[mother_index],
+                          variant.format("GB")[father_index]))
         MI_val = CheckMI(sample_GT, mother_GT, father_GT)
-        min_score = np.min([variant.format('SCOREGT')[ind] for ind in fam_indices])
-        items = [variant.CHROM, variant.POS, variant.INFO["RU"], family[0], variant.INFO["METHODS"], MI_val, min_score]
+        min_score_gt = np.min([variant.format('SCOREGT')[ind] for ind in fam_indices])
+        min_score_al = np.min([variant.format('SCOREAL')[ind] for ind in fam_indices])
+        items = [variant.CHROM, variant.POS, variant.INFO["RU"], family[0], variant.INFO["METHODS"], gbs, \
+                 MI_val, min_score_gt, min_score_al]
         sys.stdout.write("\t".join([str(item) for item in items])+"\n")
-        """
-        score_GT_dict[int(variant.format('SCOREGT')[sample_index][0]*10)][0] += MI_val ## Follows MI
-        score_GT_dict[int(variant.format('SCOREGT')[sample_index][0]*10)][1] += 1 ## Total number
-        loci_dict[variant.POS] += MI_val
-        """
