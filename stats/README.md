@@ -36,6 +36,13 @@ sums to 1,775,990
 # How many called by a single method?
 ```
 
+### PCA
+
+Convert the EnsembleTR vcf file for the whole genome to a matrix of #loci * #samples where each cell shows len(allele1) + len(allele2) with **vcf_mat.py**.
+
+Performing incrementalPCA and plotting the PCA plot with **pca_plot.py**.
+
+Submitting a job for above scripts with **pca.pbs**.
 
 
 ### Polymorphism percentage and period distribution 
