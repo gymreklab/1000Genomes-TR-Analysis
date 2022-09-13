@@ -84,3 +84,11 @@ Generating Supplementary Fig 6a in **coding_region_period_dist.ipynb**.
 Get GT per sample for coding regions with **coding_non_ref.sh**
 
 Calculate averaged non-ref allele at coding TRs per sample with **coding_non_ref.ipynb**
+
+
+### Average of TRs in each sample for which one or both alleles are non-ref
+
+Get non-ref GT per sample for whole genome with **whole_genome_nr.sh**.
+
+Calculate averaged number of TRs in each sample for which one or both alleles are non-ref with **wg_non_ref.ipynb**.
+
