@@ -45,6 +45,24 @@ Performing incrementalPCA and plotting the PCA plot with **pca_plot.py**.
 Submitting a job for above scripts with **pca.pbs**.
 
 
+### TR coordinates and intersect with coding regions
+
+Get coordinates of all TR regions in EnsembleTR output with **TR_coordinates.sh**.
+
+Intersect with coding regions using bedtools with **TR_coordinates.sh** > intersect.txt
+
+Number of overlaps with coding regions 
+
+```
+wc -l intersect.txt
+```
+
+Coding regions were downloaded from UCSC tables and were filtered with **process_coding_regions.py** to remove the followings:
+
+1. Drop duplicated regions
+2. Genes located in chromosomes other than chr1-chr22
+
+
 ### Polymorphism percentage and period distribution 
 
 Get CHROM, POS, PERIOD, ALT of coding regions and whole genome with **stats.sh** script. 
