@@ -38,7 +38,7 @@ sums to 1,775,990
 
 
 
-##### Polymorphism percentage and period distribution 
+### Polymorphism percentage and period distribution 
 
 Get CHROM, POS, PERIOD, ALT of coding regions and whole genome with **stats.sh** script. 
 
