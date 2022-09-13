@@ -38,8 +38,10 @@ sums to 1,775,990
 
 
 
-## Polymorphism percentage and period distribution 
+##### Polymorphism percentage and period distribution 
 
 Get '%CHROM\t%POS\t%PERIOD\t%ALT\n' of coding regions and whole genome with **stats.sh** script. 
+
 Calculating #loci with no alt allele / #all loci in **coding_region_period_dist.ipynb**.
+
 Generating Supplementary Fig 6a in **coding_region_period_dist.ipynb**.
