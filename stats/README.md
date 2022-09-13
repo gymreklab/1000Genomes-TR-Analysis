@@ -45,6 +45,13 @@ Performing incrementalPCA and plotting the PCA plot with **pca_plot.py**.
 Submitting a job for above scripts with **pca.pbs**.
 
 
+### Upset plot
+
+Extract method per locus with **method_extract.pbs**.
+
+Generate upset plot with **upset_plot.py**.
+
+
 ### TR coordinates and intersect with coding regions
 
 Get coordinates of all TR regions in EnsembleTR output with **TR_coordinates.sh**.
