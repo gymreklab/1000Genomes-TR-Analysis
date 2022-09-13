@@ -42,6 +42,6 @@ sums to 1,775,990
 
 Get CHROM, POS, PERIOD, ALT of coding regions and whole genome with **stats.sh** script. 
 
-Calculating #loci with no alt allele / #all loci in **coding_region_period_dist.ipynb**.
+Calculating (#loci with at least one alt allele / #all loci) in **coding_region_period_dist.ipynb**.
 
 Generating Supplementary Fig 6a in **coding_region_period_dist.ipynb**.
