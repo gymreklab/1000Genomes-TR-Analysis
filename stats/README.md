@@ -78,6 +78,8 @@ Calculating (#loci with at least one alt allele / #all loci) in **coding_region_
 
 Generating Supplementary Fig. 6a in **coding_region_period_dist.ipynb**.
 
+Getting allele frequencies with statSTR for whole chromosome in **al_freq.pbs**.
+
 Generating supplementary Fig. 6b in **coding_polymorphic.ipynb**.
 
 
