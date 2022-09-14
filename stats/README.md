@@ -76,7 +76,9 @@ Get CHROM, POS, PERIOD, ALT of coding regions and whole genome with **stats.sh**
 
 Calculating (#loci with at least one alt allele / #all loci) in **coding_region_period_dist.ipynb**.
 
-Generating Supplementary Fig 6a in **coding_region_period_dist.ipynb**.
+Generating Supplementary Fig. 6a in **coding_region_period_dist.ipynb**.
+
+Generating supplementary Fig. 6b in **coding_polymorphic.ipynb**.
 
 
 ### Averaged non-reference allele at coding TRs
@@ -91,4 +93,5 @@ Calculate averaged non-ref allele at coding TRs per sample with **coding_non_ref
 Get non-ref GT per sample for whole genome with **whole_genome_nr.sh**.
 
 Calculate averaged number of TRs in each sample for which one or both alleles are non-ref with **wg_non_ref.ipynb**.
+
 
