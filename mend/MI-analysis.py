@@ -39,10 +39,13 @@ for index, row in IDs.iterrows():
 
 sys.stderr.write("Found %s trios...\n"%(len(trio_IDs)))
 
-def CheckMI(sample_GT, mother_GT, father_GT):
-    if sample_GT[0] in mother_GT and sample_GT[1] in father_GT:
+def CheckMI(sample_alleles, mother_alleles, father_alleles):
+    sample_alleles = [len(al) for al in sample_alleles.split("/")]
+    mother_alleles = [len(al) for al in mother_alleles.split("/")]
+    father_alleles = [len(al) for al in father_alleles.split("/")]
+    if sample_alleles[0] in mother_alleles and sample_alleles[1] in father_alleles:
         return True
-    if sample_GT[1] in mother_GT and sample_GT[0] in father_GT:
+    if sample_alleles[1] in mother_alleles and sample_alleles[0] in father_alleles:
         return True
     return False
 
@@ -51,7 +54,6 @@ def IsRef(gt):
 
 vcf = VCF(vcfpath, samples = list(all_ids))
 samples = vcf.samples
-
 for variant in vcf:
     n_families = 0  # Number of families with full call
     if len(variant.ALT) == 0: # If there is no alt allele here
@@ -72,8 +74,9 @@ for variant in vcf:
         gbs=("%s,%s,%s"%(variant.format("GB")[sample_index],
                           variant.format("GB")[mother_index],
                           variant.format("GB")[father_index]))
-        MI_val = CheckMI(sample_GT, mother_GT, father_GT)
+        MI_val = CheckMI(variant.gt_bases[sample_index], variant.gt_bases[mother_index], variant.gt_bases[father_index])
         min_score_gt = np.min([variant.format('SCORE')[ind] for ind in fam_indices])
         items = [variant.CHROM, variant.POS, variant.INFO["RU"], family[0], variant.INFO["METHODS"], gbs, \
                  MI_val, min_score_gt]
         sys.stdout.write("\t".join([str(item) for item in items])+"\n")
+
