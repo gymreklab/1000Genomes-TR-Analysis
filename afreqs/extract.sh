@@ -1,7 +1,8 @@
 #!/bin/bash
 
 PREFIX=$1
-DATADIR=/gymreklab-tscc/helia/ensembl
+#DATADIR=/gymreklab-tscc/helia/ensembl
+DATADIR=/projects/ps-gymreklab/helia/ensembl
 
 bcftools view -h ${DATADIR}/ensemble_out/merged_chr1_sorted_ver2.vcf.gz > ${PREFIX}.vcf
 
