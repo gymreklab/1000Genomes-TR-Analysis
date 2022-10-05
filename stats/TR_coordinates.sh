@@ -7,6 +7,4 @@
 #done
 #
 ## get mapping
-#bedtools intersect -a /projects/ps-gymreklab/helia/ensembl/experiments/coding_regions/all_TR_coordinates.bed -b /projects/ps-gymreklab/helia/ensembl/experiments/coding_regions/coding_regions_sorted_corrected.bed -wb -wa > /projects/ps-gymreklab/helia/ensembl/experiments/coding_regions/mapping.txt
-#
-awk '{ print $4, $5, $6; OFS="\t"  }' /projects/ps-gymreklab/helia/ensembl/experiments/coding_regions/mapping.txt > /projects/ps-gymreklab/helia/ensembl/experiments/coding_regions/overlapping_genes_coordinates.txt
+bedtools intersect -a /projects/ps-gymreklab/helia/ensembl/experiments/coding_regions/all_TR_coordinates.bed -b /projects/ps-gymreklab/helia/ensembl/experiments/coding_regions/coding_regions_sorted_corrected.bed -wb -wa > /projects/ps-gymreklab/helia/ensembl/experiments/coding_regions/mapping.txt
