@@ -34,4 +34,16 @@ Get CHROM, POS, PERIOD, ALT of coding regions and whole genome with **wg_alt.sh*
 Generating Supplementary Fig. 6a in **coding_region_period_dist.ipynb**.
 
 
+### Per sample stats
+
+
+Average of TRs in each sample for which one or both alleles did not match the reference genome:
+
+Filter non-ref calls for each sample using **whole_genome_nr.sh**
+
+Count the numbers for whole genome and coding regions in **coding_non_ref.ipynb**.
+
+Generating Supplementary Table 6 in **coding_non_ref.ipynb**.
+
+
 
