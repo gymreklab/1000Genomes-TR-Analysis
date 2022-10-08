@@ -10,7 +10,6 @@
 #PBS -q hotel
 #PBS -V
 
-# Getting GT for each sample
 
-bcftools query -R /projects/ps-gymreklab/helia/ensembl/experiments/coding_regions/intersect.txt -f '[%CHROM\t%POS\t%SAMPLE\t%GT\n]' /projects/ps-gymreklab/helia/ensembl/ensemble_out/merged_chr"$chr"_sorted_ver2.vcf.gz > /projects/ps-gymreklab/helia/ensembl/experiments/coding_regions/info/gene_gt_chr"$chr".txt
+bcftools query -f '%CHROM\t%POS\t%PERIOD\t%END\t%ALT\n' /projects/ps-gymreklab/helia/ensembl/ensemble_out/merged_chr"$chr"_sorted_ver2.vcf.gz > /projects/ps-gymreklab/helia/ensembl/experiments/coding_regions/info/stats_chr"$chr".txt
 

@@ -9,7 +9,7 @@
 #PBS -q hotel
 #PBS -V
 
-# Getting GT for each sample
+# Getting alt GT for each sample
 cd /projects/ps-gymreklab/helia/ensembl/experiments/stats
 
 bcftools query -f '[%CHROM\t%POS\t%SAMPLE\t%GT\n]' -i 'GT="alt"' /projects/ps-gymreklab/helia/ensembl/ensemble_out/merged_chr"$chr"_sorted_ver2.vcf.gz > info/gt_chr"$chr".txt
