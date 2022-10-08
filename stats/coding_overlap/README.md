@@ -9,7 +9,7 @@ Get coordinates of all TR regions in EnsembleTR output with **TR_coordinates.sh*
 
 Intersect with coding regions using bedtools with **TR_coordinates.sh** 
 
-Finding TRs entirely in coding regions with overlap_finder.cpp. Compare the results with overlaps found by bedtools in **coding_region_intersect.ipynb**
+Finding TRs entirely in coding regions with **overlap_finder.cpp**. Compare the results with overlaps found by bedtools in **coding_region_intersect.ipynb**
 
 ### Heterozygosity of coding TRs in different populations
 
