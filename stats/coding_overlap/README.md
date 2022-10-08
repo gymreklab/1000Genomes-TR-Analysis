@@ -46,7 +46,7 @@ Count the numbers for whole genome and coding regions in **coding_non_ref.ipynb*
 Generating Supplementary Table 6 in **coding_non_ref.ipynb**.
 
 
-### Polymorphism comparison
+### Number of common alleles comparison
 
 Getting allele frequencies for whole genome with **../al_freq.pbs**.
 
