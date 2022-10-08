@@ -4,7 +4,7 @@ VCFs at `/gymreklab-tscc/helia/ensembl/ensemble_out/`
 
 How many calls:
 
-wc -l /projects/ps-gymreklab/helia/ensembl/experiments/upset_plot/methods_chr**
+wc -l `/projects/ps-gymreklab/helia/ensembl/experiments/upset_plot/methods_chr**`
 
 
 
