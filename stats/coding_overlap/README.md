@@ -9,7 +9,7 @@ Get coordinates of all TR regions in EnsembleTR output with **TR_coordinates.sh*
 
 Intersect with coding regions using bedtools with **TR_coordinates.sh** 
 
-Finding TRs entirely in coding regions with overlap_finder.cpp. Compare the results with overlaps found by bedtools in **coding_region_intersect.ipynb**
+Finding TRs entirely in coding regions with **overlap_finder.cpp**. Compare the results with overlaps found by bedtools in **coding_region_intersect.ipynb**
 
 ### Heterozygosity of coding TRs in different populations
 
@@ -17,7 +17,7 @@ Extract coding calls from vcf files with **extract_coding.sh**.
 
 Calculate heterozygosity per population with **coding_tr_heterozygosity.sh** and **coding_tr_heterozygosity_runner.sh**
 
-Generating supplementary table table 7 in **coding_region_intersect.ipynb**
+Generating supplementary table 7 in **coding_region_intersect.ipynb**
 
 ### Polymorphism percentage
 
@@ -44,6 +44,15 @@ Filter non-ref calls for each sample using **whole_genome_nr.sh**
 Count the numbers for whole genome and coding regions in **coding_non_ref.ipynb**.
 
 Generating Supplementary Table 6 in **coding_non_ref.ipynb**.
+
+
+### Number of common alleles comparison
+
+Getting allele frequencies for whole genome with **../al_freq.pbs**.
+
+Compare number of common alleles in coding regions and whole genome with **coding_polymorphic.ipynb**.
+
+Generating Supplementary Fig. 6b in **coding_polymorphic.ipynb**.
 
 
 
