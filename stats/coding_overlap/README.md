@@ -7,7 +7,7 @@ Coding regions were downloaded from UCSC tables and were filtered with **process
 
 Get coordinates of all TR regions in EnsembleTR output with **TR_coordinates.sh**.
 
-Intersect with coding regions using bedtools with **TR_coordinates.sh** > intersect.txt
+Intersect with coding regions using bedtools with **TR_coordinates.sh** 
 
 Finding TRs entirely in coding regions with overlap_finder.cpp. Compare the results with overlaps found by bedtools in **coding_region_intersect.ipynb**
 
@@ -21,8 +21,17 @@ Generating supplementary table table 7 in **coding_region_intersect.ipynb**
 
 ### Polymorphism percentage
 
-Get CHROM, POS, PERIOD, ALT of coding regions and whole genome with **stats.sh** script. 
+Get CHROM, POS, PERIOD, ALT of coding regions and whole genome with **wg_alt.sh** script. 
 
+Calculate polymorphism rate in coding and whole genome in **coding_region_intersect.ipynb**
+
+
+### Motif length distribution 
+
+
+Get CHROM, POS, PERIOD, ALT of coding regions and whole genome with **wg_alt.sh** script. 
+
+Generating Supplementary Fig. 6a in **coding_region_period_dist.ipynb**.
 
 
 
