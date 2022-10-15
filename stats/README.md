@@ -22,3 +22,11 @@ Submitting a job for above scripts with **pca.pbs**.
 Extract method per locus with **method_extract.pbs**.
 
 Generate upset plot with **upset_plot.py**.
+
+
+### Per population variants plot
+
+Extract genotypes per sample with **variant_pop.pbs** and **qc.py**.
+
+Making the plot with **variants_per_pop.ipynb**.
+

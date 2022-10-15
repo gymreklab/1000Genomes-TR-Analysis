@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#PBS -N num_variants
+#PBS -l nodes=1:ppn=1
+#PBS -l walltime=2:00:00
+#PBS -o /projects/ps-gymreklab/helia/ensembl/experiments/stats/log
+#PBS -e /projects/ps-gymreklab/helia/ensembl/experiments/stats/log
+#PBS -A gymreklab-group
+#PBS -q home
+
+source /projects/ps-gymreklab/helia/ensembl/venv_3.9/bin/activate
+
+
+bcftools view -S /projects/ps-gymreklab/helia/ensembl/experiments/allele_freq/names/"$pop_name"_names.txt --force-samples \
+               /projects/ps-gymreklab/helia/ensembl/ensemble_out/merged_chr"$chr"_sorted_ver2.vcf.gz \
+               | python3 /projects/ps-gymreklab/helia/ensembl/experiments/stats/qc.py $pop_name $chr
