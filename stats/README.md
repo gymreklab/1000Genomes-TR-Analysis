@@ -28,4 +28,5 @@ Generate upset plot with **upset_plot.py**.
 
 Extract genotypes per sample with **variant_pop.pbs** and **qc.py**.
 
+Making the plot with **variants_per_pop.ipynb**.
 
