@@ -1,3 +1,5 @@
+diff_dist/preprocessed_data/*.csv
+
 # Generated files
 *.tab
 *pdfs/
