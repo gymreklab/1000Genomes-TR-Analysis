@@ -23,7 +23,7 @@ if __name__ == '__main__':
 
 	for chrom in tqdm(chroms):
 		print("\nLoading CSV...")
-		df = pd.read_csv(os.path.join(data_dir_path, f'chr{chrom}.csv'))
+		df = pd.read_csv(os.path.join(data_dir_path, f'chr{chrom}.csv')).drop_duplicates()
 		print("\tcomplete")
 
 		for _, row in tqdm(df.iterrows(), desc=f"chr{chrom}", total=len(df)):
