@@ -43,6 +43,8 @@ if __name__ == '__main__':
 	plt.suptitle("Differences in Copy Number Between Super Populations ")
 	plt.show()
 
+	# Plot STRs 
+
 	# Find CA10
 	pos_start = 49707674
 	pos_end = 50237161
@@ -56,7 +58,8 @@ if __name__ == '__main__':
 
 	# Find most significant
 	ca10 = ca10.sort_values('kruskal_pval_bonf').reset_index(drop=True)
-	example = ca10.iloc[1]
+	example = ca10.iloc[0]
+	# example = results[results.position == 51831667].iloc[0]
 	example_data = chr17_df[chr17_df.position == example.position]
 
 	# Get diffs for each population and make dataframe
@@ -64,20 +67,21 @@ if __name__ == '__main__':
 	for pop in ['AMR', 'AFR', 'EAS', 'EUR', 'SAS']:
 		diffs = example_data[f'diffs_{pop}'].item().strip(' []').split(',')
 		diff_data.extend(
-			[{'pop': pop, 'diff': int(d.strip())} for d in diffs]
+			[{'pop': pop, 'diff_n_bases': int(d.strip())} for d in diffs]
 		)
 
 	diff_data = pd.DataFrame(diff_data)
+	diff_data['Copy Num. From Ref.'] = diff_data.diff_n_bases / example_data.motif_len.item()
 
 	# Plot
 	sns.displot(
 		data=diff_data,
-		x='diff',
+		x='Copy Num. From Ref.',
 		hue='pop',
 		kind="kde",
 		common_norm=False,
 		common_grid=True,
-		bw_adjust=diff_data['diff'].std()
+		bw_adjust=1.5#diff_data['Copy Num. From Ref.'].std()
 	)
 	# sns.displot(
 	# 	data=diff_data,

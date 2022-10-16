@@ -1,4 +1,5 @@
 diff_dist/preprocessed_data/*.csv
+diff_dist/computed_stats/kruskal_coding.csv
 
 # Generated files
 *.tab
