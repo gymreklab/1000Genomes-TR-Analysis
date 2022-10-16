@@ -25,6 +25,16 @@ if __name__ == '__main__':
 		print("\nLoading CSV...")
 		df = pd.read_csv(os.path.join(data_dir_path, f'chr{chrom}.csv')).drop_duplicates()
 		print("\tcomplete")
+		
+		# Remoce rows with '[]' for a pop diff
+		df = df[~df.diffs_AMR.str.contains('\[\]')].reset_index(drop=True)
+		df = df[~df.diffs_AFR.str.contains('\[\]')].reset_index(drop=True)
+		df = df[~df.diffs_EAS.str.contains('\[\]')].reset_index(drop=True)
+		df = df[~df.diffs_EUR.str.contains('\[\]')].reset_index(drop=True)
+		df = df[~df.diffs_SAS.str.contains('\[\]')].reset_index(drop=True)
+
+		# Remove duplicate rows in terms of chr and postition
+		df = df.drop_duplicates(subset=['chr', 'position']).reset_index(drop=True)
 
 		for _, row in tqdm(df.iterrows(), desc=f"chr{chrom}", total=len(df)):
 			all_diffs = [
