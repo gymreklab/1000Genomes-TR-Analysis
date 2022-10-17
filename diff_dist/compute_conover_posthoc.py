@@ -10,6 +10,9 @@ import pandas as pd
 from scikit_posthocs import posthoc_conover
 from tqdm import tqdm
 
+import warnings
+warnings.filterwarnings("error")
+
 
 if __name__ == '__main__':
 	corr_res_dir = 'computed_stats'
@@ -37,11 +40,23 @@ if __name__ == '__main__':
 	for chrom in tqdm(signif_STRs.chr.unique(), desc='Chromosomes'):
 		# Load data
 		chr_df = pd.read_csv(os.path.join(data_dir_path, f'{chrom}.csv'))
-		chr_df = chr_df[chr_df.position.isin(signif_STRs.position)].drop_duplicates()
+
+		# Remoce rows with '[]' for a pop diff
+		chr_df = chr_df[~chr_df.diffs_AMR.str.contains('\[\]')].reset_index(drop=True)
+		chr_df = chr_df[~chr_df.diffs_AFR.str.contains('\[\]')].reset_index(drop=True)
+		chr_df = chr_df[~chr_df.diffs_EAS.str.contains('\[\]')].reset_index(drop=True)
+		chr_df = chr_df[~chr_df.diffs_EUR.str.contains('\[\]')].reset_index(drop=True)
+		chr_df = chr_df[~chr_df.diffs_SAS.str.contains('\[\]')].reset_index(drop=True)
+
+		# Remove duplicate rows in terms of chr and postition
+		chr_df = chr_df[chr_df.position.isin(signif_STRs.position)]
+		chr_df = chr_df.drop_duplicates(subset=['chr', 'position']).reset_index(drop=True)
+
+		signif_chr_df = signif_STRs.merge(chr_df, on=['chr', 'position'], how='inner')
 
 		# Compute pairwise Conover-Iman statistics
 		for _, row in tqdm(
-			chr_df.iterrows(), desc="Computing pairwise differences", total=len(chr_df)
+			signif_chr_df.iterrows(), desc="Computing pairwise differences", total=len(chr_df)
 		):
 			all_diffs = {
 				'AMR': row.diffs_AMR, 'AFR': row.diffs_AFR, 'EAS': row.diffs_EAS,
