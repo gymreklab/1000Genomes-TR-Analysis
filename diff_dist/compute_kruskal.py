@@ -27,19 +27,19 @@ if __name__ == '__main__':
 		print("\tcomplete")
 		
 		# Remoce rows with '[]' for a pop diff
-		df = df[~df.diffs_AMR.str.contains('\[\]')].reset_index(drop=True)
+#		df = df[~df.diffs_AMR.str.contains('\[\]')].reset_index(drop=True)
 		df = df[~df.diffs_AFR.str.contains('\[\]')].reset_index(drop=True)
-		df = df[~df.diffs_EAS.str.contains('\[\]')].reset_index(drop=True)
+#		df = df[~df.diffs_EAS.str.contains('\[\]')].reset_index(drop=True)
 		df = df[~df.diffs_EUR.str.contains('\[\]')].reset_index(drop=True)
-		df = df[~df.diffs_SAS.str.contains('\[\]')].reset_index(drop=True)
+#		df = df[~df.diffs_SAS.str.contains('\[\]')].reset_index(drop=True)
 
 		# Remove duplicate rows in terms of chr and postition
 		df = df.drop_duplicates(subset=['chr', 'position']).reset_index(drop=True)
 
 		for _, row in tqdm(df.iterrows(), desc=f"chr{chrom}", total=len(df)):
 			all_diffs = [
-				row.diffs_AMR, row.diffs_AFR, row.diffs_EAS, 
-				row.diffs_EUR, row.diffs_SAS
+				row.diffs_AFR, 
+				row.diffs_EUR
 			]
 			if any(d == '[]' for d in all_diffs):
 				# print("No vals for at least one populations")
@@ -70,5 +70,5 @@ if __name__ == '__main__':
 
 	# Save Results
 	results = pd.DataFrame(results)
-	results.to_csv(os.path.join('computed_stats', 'kruskal.csv'))
+	results.to_csv(os.path.join('computed_stats', 'kruskal_AFR_EUR.csv'))
 
