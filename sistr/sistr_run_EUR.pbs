@@ -1,0 +1,24 @@
+#!/bin/bash
+#PBS -q hotel 
+#PBS -N sistr
+#PBS -l nodes=1:ppn=4
+#PBS -l walltime=80:00:00
+#PBS -o /projects/ps-gymreklab/helia/ensembl/sistr_analysis/log
+#PBS -e /projects/ps-gymreklab/helia/ensembl/sistr_analysis/log
+#PBS -V
+#PBS -M hziaeija@ucsd.edu
+#PBS -A gymreklab-group
+
+source /projects/ps-gymreklab/helia/ensembl/venv_3.9/bin/activate
+cd /projects/ps-gymreklab/helia/ensembl/sistr_analysis/
+echo $pop
+
+
+python /projects/ps-gymreklab/helia/ensembl/sistr_analysis/SISTR/sistr/SISTR_v1.py \
+	--in-file al_freqs/"$pop"_sistr_input.txt \
+  	--out-file sistr_results/"$pop"_sistr.txt \
+	--abc-lookup-folder sistr_resources/abc_lookup/ \
+	--lrt-lookup-folder sistr_resources/lrt_lookup/ \
+	--motif-format
+
+	

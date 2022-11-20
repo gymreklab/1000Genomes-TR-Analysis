@@ -1,0 +1,16 @@
+#!/bin/bash
+#PBS -q hotel
+#PBS -N period_ru
+#PBS -l nodes=1:ppn=1
+#PBS -l walltime=1:00:00
+#PBS -o /projects/ps-gymreklab/helia/ensembl/sistr_analysis/log
+#PBS -e /projects/ps-gymreklab/helia/ensembl/sistr_analysis/log
+#PBS -V
+#PBS -M hziaeija@ucsd.edu
+#PBS -A gymreklab-group
+
+
+
+bcftools query -f "%CHROM\t%POS\t%PERIOD\t%RU\n" /projects/ps-gymreklab/helia/ensembl/ensemble_out/merged_chr"$chr"_sorted_ver2.vcf.gz > /projects/ps-gymreklab/helia/ensembl/sistr_analysis/al_freqs/info_"$chr".txt
+
+

@@ -1,0 +1,27 @@
+#!/bin/bash
+#PBS -q hotel
+#PBS -N simulate_AFR
+#PBS -l nodes=1:ppn=1
+#PBS -l walltime=6:00:00
+#PBS -o /projects/ps-gymreklab/helia/ensembl/sistr_analysis/log
+#PBS -e /projects/ps-gymreklab/helia/ensembl/sistr_analysis/log
+#PBS -V
+#PBS -M hziaeija@ucsd.edu
+#PBS -A gymreklab-group
+
+source /projects/ps-gymreklab/helia/ensembl/venv_3.9/bin/activate
+
+cd /projects/ps-gymreklab/helia/ensembl/sistr_analysis/sistr_changed/SISTR/simulations
+
+#python ABC_lookup.py \
+#     --out-folder /projects/ps-gymreklab/helia/ensembl/sistr_analysis/sistr_resources_AFR/abc_lookup/ \
+#     --per $a \
+#     --opt-allele $b
+
+
+python LRT_lookup.py \
+     --out-folder /projects/ps-gymreklab/helia/ensembl/sistr_analysis/sistr_resources_AFR/lrt_lookup/ \
+     --per $a \
+     --opt-allele $b \
+     --s-vals  0.2 \
+     --file-name-custom _zero_point_two
