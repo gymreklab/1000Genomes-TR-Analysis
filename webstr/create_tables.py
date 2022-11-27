@@ -20,7 +20,7 @@ def fix_start(loc):
     return loc
 
 ## Reading gene annotations
-repeat_info = pd.read_csv(f"/expanse/projects/gymreklab/helia/ensembl/1000Genomes-TR-Analysis/webstr/genome_annotations/gene_annotation_chr{chromosome}.txt", comment = "#", delim_whitespace=True, header=None)
+repeat_info = pd.read_csv(f"/projects/ps-gymreklab/helia/ensembl/1000Genomes-TR-Analysis/webstr/genome_annotations/gene_annotation_chr{chromosome}.txt", comment = "#", delim_whitespace=True, header=None)
 repeat_info.columns = "#Uploaded_variation     Location        Allele  Gene    Feature Feature_type    Consequence     cDNA_position   CDS_position    Protein_position        Amino_acids     Codons  Existing_variation      Extra".split()
 repeat_info = repeat_info.drop_duplicates(subset = ['#Uploaded_variation', 'Location', 'Gene']) # Drop transcript information
 
@@ -57,7 +57,7 @@ def fix_freqs(freqs):
     return dict(updated_freqs)
             
 pops = ['AFR', 'AMR', 'EAS', 'SAS', 'EUR']
-addr = '/expanse/projects/gymreklab/helia/ensembl/experiments/allele_freq/freqs/'
+addr = '/projects/ps-gymreklab/helia/ensembl/experiments/allele_freq/freqs/'
 all_pop_df = gene_info_grouped[['Chrom', 'Start','ID']]
 for pop in pops:
     freq_het = pd.read_csv(f"{addr}freqs_chr{chromosome}_{pop}.tab", sep = "\t")
