@@ -20,7 +20,7 @@ def fix_start(loc):
     return loc
 
 ## Reading gene annotations
-repeat_info = pd.read_csv(f"/projects/ps-gymreklab/helia/ensembl/1000Genomes-TR-Analysis/webstr/genome_annotations/gene_annotation_chr{chromosome}.txt", comment = "#", delim_whitespace=True, header=None)
+repeat_info = pd.read_csv(f"/expanse/projects/gymreklab/helia/ensembl/1000Genomes-TR-Analysis/webstr/genome_annotations/gene_annotation_chr{chromosome}.txt", comment = "#", delim_whitespace=True, header=None)
 repeat_info.columns = "#Uploaded_variation     Location        Allele  Gene    Feature Feature_type    Consequence     cDNA_position   CDS_position    Protein_position        Amino_acids     Codons  Existing_variation      Extra".split()
 repeat_info = repeat_info.drop_duplicates(subset = ['#Uploaded_variation', 'Location', 'Gene']) # Drop transcript information
 
@@ -40,6 +40,7 @@ gene_info = gene_info[[0,1,2,3,'id','Gene']]
 gene_info.columns = ['Chrom', 'Start', 'End', 'Motif', 'ID', 'Gene']
 gene_info_grouped = gene_info.groupby(['Chrom', 'Start', 'End', 
                                        'Motif', 'ID'], as_index = False).agg({'Gene':lambda x: list(x)})
+gene_info_grouped['Gene'] = gene_info_grouped.apply(lambda x: json.dumps(x['Gene']), axis = 1)
 gene_info_grouped['Source'] = 'EnsembleTR'
 
 
@@ -53,16 +54,17 @@ def fix_freqs(freqs):
         for freq in freqs:
             freq = freq.split(":")
             updated_freqs[len(freq[0])] += float(freq[1])
-    return updated_freqs
+    return dict(updated_freqs)
             
 pops = ['AFR', 'AMR', 'EAS', 'SAS', 'EUR']
-addr = '/projects/ps-gymreklab/helia/ensembl/experiments/allele_freq/freqs/'
+addr = '/expanse/projects/gymreklab/helia/ensembl/experiments/allele_freq/freqs/'
 all_pop_df = gene_info_grouped[['Chrom', 'Start','ID']]
 for pop in pops:
     freq_het = pd.read_csv(f"{addr}freqs_chr{chromosome}_{pop}.tab", sep = "\t")
     freq_het.end = freq_het.end - 1
     freq_het['ID'] = freq_het.chrom + ":" + freq_het.start.astype(str) + "-" + freq_het.end.astype(str)
     freq_het['afreq-1'] = freq_het.apply(lambda x:fix_freqs(x['afreq-1']), axis = 1)
+    freq_het['afreq-1'] = freq_het.apply(lambda x: json.dumps(x['afreq-1']), axis = 1)
     freq_het = freq_het[['chrom', 'start', 'ID', 'afreq-1', f'het-1', 'numcalled-1']]
     freq_het.columns = ['Chrom', 'Start', 'ID', f'afreq_{pop}', f'het_{pop}', f'numcalled_{pop}']
     freq_het = freq_het.drop_duplicates(subset='ID')
@@ -71,5 +73,5 @@ for pop in pops:
     
 assert(len(gene_info_grouped) == len(all_pop_df))
 
-gene_info_grouped.to_csv(f"{output_addr}/repeat_tables/repeat_info_chr{chromosome}.csv", index=False, sep = ",")
-all_pop_df.to_csv(f"{output_addr}/afreq_het_tables/afreq_het_chr{chromosome}.csv", index=False, sep = ",")
+gene_info_grouped.to_csv(f"{output_addr}/repeat_tables/repeat_info_chr{chromosome}.csv", index=False, sep = "\t", quoting=csv.QUOTE_NONE, escapechar='', quotechar='')
+all_pop_df.to_csv(f"{output_addr}/afreq_het_tables/afreq_het_chr{chromosome}.csv", index=False, sep = "\t", quoting=csv.QUOTE_NONE, escapechar='', quotechar='')

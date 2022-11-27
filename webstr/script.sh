@@ -24,9 +24,5 @@ vep -i /projects/ps-gymreklab/helia/ensembl/ensemble_out/merged_chr21_sorted_ver
 bcftools query -f '%CHROM\t%POS\t%END\t%RU\n' /projects/ps-gymreklab/helia/ensembl/ensemble_out/merged_chr"$chr"_sorted_ver2.vcf.gz > "$webstr_addr"/tables/repeat_tables/ensemble_"$chr".txt
 
 
-python3 "$webstr_addr"/create_tables.py $chr &&
-
-
-rm /projects/ps-gymreklab/helia/ensembl/1000Genomes-TR-Analysis/webstr/tables/repeat_tables/ensemble_"$chr".txt
-
+python3 "$webstr_addr"/create_tables.py $chr
 
