@@ -1,6 +1,8 @@
 import pandas as pd
 from collections import defaultdict
 import sys
+import json
+import csv
 
 chromosome = sys.argv[1]
 output_addr = "/projects/ps-gymreklab/helia/ensembl/1000Genomes-TR-Analysis/webstr/tables"
@@ -38,6 +40,7 @@ repeat_info['Location'] = repeat_info.apply(lambda x: fix_start(x['Location']), 
 gene_info = pd.merge(ensemble_output, repeat_info, left_on="id", right_on="Location", how="outer")
 gene_info = gene_info[[0,1,2,3,'id','Gene']]
 gene_info.columns = ['Chrom', 'Start', 'End', 'Motif', 'ID', 'Gene']
+gene_info['Gene'] = gene_info['Gene'].fillna("-")
 gene_info_grouped = gene_info.groupby(['Chrom', 'Start', 'End', 
                                        'Motif', 'ID'], as_index = False).agg({'Gene':lambda x: list(x)})
 gene_info_grouped['Gene'] = gene_info_grouped.apply(lambda x: json.dumps(x['Gene']), axis = 1)
@@ -48,7 +51,7 @@ gene_info_grouped['Source'] = 'EnsembleTR'
 def fix_freqs(freqs):
     updated_freqs = defaultdict(int)
     if freqs == ".":
-        return "."
+        return {}
     else:
         freqs = freqs.split(",")
         for freq in freqs:
