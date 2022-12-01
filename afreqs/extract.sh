@@ -1,15 +1,15 @@
 #!/bin/bash
 
 PREFIX=$1
-DATADIR=/gymreklab-tscc/helia/ensembl
+DATADIR=/projects/ps-gymreklab/helia/ensembl
 #DATADIR=/projects/ps-gymreklab/helia/ensembl
 
-bcftools view -h ${DATADIR}/ensemble_out/merged_chr1_sorted_ver2.vcf.gz > ${PREFIX}.vcf
+bcftools view -h ${DATADIR}/ensemble_out/ensemble_chr1_dropped.vcf.gz  > ${PREFIX}.vcf
 
 for i in {1..22}
 do
     bcftools view -H -S ../metadata/samples.txt -R ${PREFIX}_loci.bed --no-update \
-	${DATADIR}/ensemble_out/merged_chr"$i"_sorted_ver2.vcf.gz >> ${PREFIX}.vcf
+	${DATADIR}/ensemble_out/ensemble_chr"$i"_dropped.vcf.gz  >> ${PREFIX}.vcf
 done
 
 bgzip -f ${PREFIX}.vcf
