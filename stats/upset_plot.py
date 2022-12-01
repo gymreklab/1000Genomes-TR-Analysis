@@ -5,9 +5,10 @@ from matplotlib import pyplot
 dict = {"1|1|1|1":0, "1|1|1|0":0, "1|1|0|1":0, "1|0|1|1":0, "0|1|1|1":0,
         "1|1|0|0":0, "0|0|1|1":0, "1|0|1|0":0, "0|1|1|0":0, "0|1|0|1":0, "1|0|0|1":0, "0|0|0|1":0, "1|0|0|0":0,"0|1|0|0":0,"0|0|1|0":0 }
 
+dir_addr="/projects/ps-gymreklab/helia/ensembl/experiments/upset_plot"
 for i in range(1,23):
     print(i)
-    with open("methods_chr" + str(i) + ".txt") as f:
+    with open(dir_addr + "/methods_chr" + str(i) + ".txt") as f:
         for line in f:
             if "Number" in line:
                 continue
@@ -39,10 +40,10 @@ example = from_memberships(
     )
 
 plot(example, show_counts="%d", sort_by='cardinality', facecolor="darkblue", shading_color="lightgray")
-pyplot.savefig("upset_cnt.png", dpi = 1200)
+pyplot.savefig(dir_addr+"/upset_cnt.png", dpi = 1200)
 
 plot(example, show_counts=False, sort_by='cardinality', facecolor="darkblue", shading_color="lightgray")
-pyplot.savefig("upset.png", dpi = 1200)
+pyplot.savefig(dir_addr+"/upset.png", dpi = 1200)
 
 
 

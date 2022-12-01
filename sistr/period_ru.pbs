@@ -11,6 +11,7 @@
 
 
 
-bcftools query -f "%CHROM\t%POS\t%PERIOD\t%RU\n" /projects/ps-gymreklab/helia/ensembl/ensemble_out/merged_chr"$chr"_sorted_ver2.vcf.gz > /projects/ps-gymreklab/helia/ensembl/sistr_analysis/al_freqs/info_"$chr".txt
+bcftools query -f "%CHROM\t%POS\t%PERIOD\t%RU\n" /projects/ps-gymreklab/helia/ensembl/ensemble_out/ensemble_chr"$chr"_dropped.vcf.gz > /projects/ps-gymreklab/helia/ensembl/sistr_analysis/al_freqs/info_"$chr".txt
+
 
 

@@ -7,4 +7,4 @@
 #done
 #
 ## get mapping
-bedtools intersect -a /projects/ps-gymreklab/helia/ensembl/experiments/coding_regions/all_TR_coordinates.bed -b /projects/ps-gymreklab/helia/ensembl/experiments/coding_regions/coding_regions_sorted_corrected.bed -wb -wa > /projects/ps-gymreklab/helia/ensembl/experiments/coding_regions/mapping.txt
+bedtools intersect -a /projects/ps-gymreklab/helia/ensembl/experiments/coding_regions/all_TR_coordinates.bed -b /projects/ps-gymreklab/helia/ensembl/experiments/coding_regions/coding_regions_corrected.bed -wb -wa > /projects/ps-gymreklab/helia/ensembl/experiments/coding_regions/mapping_2.txt

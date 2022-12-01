@@ -11,6 +11,6 @@
 
 
 echo $chr
-zcat /projects/ps-gymreklab/helia/ensembl/ensemble_out/merged_chr"$chr"_sorted_ver2.vcf.gz | grep -o -P 'METHODS.{0,8}' > /projects/ps-gymreklab/helia/ensembl/experiments/upset_plot/methods_chr"$chr".txt 
+zcat /projects/ps-gymreklab/helia/ensembl/ensemble_out/ensemble_chr"$chr"_dropped.vcf.gz  | grep -o -P 'METHODS.{0,8}' > /projects/ps-gymreklab/helia/ensembl/experiments/upset_plot/methods_chr"$chr".txt 
 
 
