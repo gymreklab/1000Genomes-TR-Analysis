@@ -1,6 +1,9 @@
 from upsetplot import from_memberships
 from upsetplot import plot
 from matplotlib import pyplot
+import matplotlib
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
 
 dict = {"1|1|1|1":0, "1|1|1|0":0, "1|1|0|1":0, "1|0|1|1":0, "0|1|1|1":0,
         "1|1|0|0":0, "0|0|1|1":0, "1|0|1|0":0, "0|1|1|0":0, "0|1|0|1":0, "1|0|0|1":0, "0|0|0|1":0, "1|0|0|0":0,"0|1|0|0":0,"0|0|1|0":0 }
@@ -40,10 +43,10 @@ example = from_memberships(
     )
 
 plot(example, show_counts="%d", sort_by='cardinality', facecolor="darkblue", shading_color="lightgray")
-pyplot.savefig(dir_addr+"/upset_cnt.png", dpi = 1200)
+pyplot.savefig(dir_addr+"/upset_cnt.pdf", dpi = 1200)
 
 plot(example, show_counts=False, sort_by='cardinality', facecolor="darkblue", shading_color="lightgray")
-pyplot.savefig(dir_addr+"/upset.png", dpi = 1200)
+pyplot.savefig(dir_addr+"/upset.pdf", dpi = 1200)
 
 
 
