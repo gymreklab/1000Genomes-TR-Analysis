@@ -12,5 +12,5 @@ source /projects/ps-gymreklab/helia/ensembl/venv_3.9/bin/activate
 
 
 bcftools view -S /projects/ps-gymreklab/helia/ensembl/experiments/allele_freq/names/"$pop_name"_names.txt --force-samples \
-               /projects/ps-gymreklab/helia/ensembl/ensemble_out/ensemble_chr"$chr"_dropped.vcf.gz  \
-               | python3 /projects/ps-gymreklab/helia/ensembl/experiments/stats/qc.py $pop_name $chr
+               /projects/ps-gymreklab/helia/ensembl/ensemble_out/ensemble_chr"$chr"_filtered.vcf.gz \
+               | python3 /projects/ps-gymreklab/helia/ensembl/1000Genomes-TR-Analysis/stats/qc.py $pop_name $chr
