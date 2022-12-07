@@ -1,0 +1,20 @@
+#!/bin/bash
+
+#PBS -N MI_filter
+#PBS -l nodes=1:ppn=1
+#PBS -l walltime=20:00:00
+#PBS -o /projects/ps-gymreklab/helia/ensembl/1000Genomes-TR-Analysis/mend/log
+#PBS -e /projects/ps-gymreklab/helia/ensembl/1000Genomes-TR-Analysis/mend/log
+#PBS -A gymreklab-group
+#PBS -q hotel
+#PBS -V
+
+MI_ADDR=/projects/ps-gymreklab/helia/ensembl/1000Genomes-TR-Analysis/mend/failed_MI/failed_MI_chr"$chr".txt
+INPUT_ADDR=/projects/ps-gymreklab/helia/ensembl/ensemble_out/ensemble_chr"$chr"_filtered.vcf.gz
+OUTPUT_ADDR=/projects/ps-gymreklab/helia/ensembl/filtered_calls
+
+zcat $INPUT_ADDR | grep -Fwvf $MI_ADDR > $OUTPUT_ADDR/chr"$chr"_MI_filtered.vcf
+
+
+bgzip -f $OUTPUT_ADDR/chr"$chr"_MI_filtered.vcf
+tabix -f -p "vcf" $OUTPUT_ADDR/chr"$chr"_MI_filtered.vcf.gz
