@@ -10,4 +10,6 @@
 # x-axis: add one sample at a time. y-axis: number of alleles
 # Exclude homopolymers. break into: singleton, doubleton, polymorphic
 # Order samples: EUR, EAS, AMR, SAS, AFR, H3Africa
-./get_cumulative_counts.py
+./get_cumulative_counts.py > cumulative_allele_counts.tab
+
+# Plot with notebook
