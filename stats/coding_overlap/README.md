@@ -15,7 +15,6 @@ Finding TRs entirely in coding regions with **overlap_finder.cpp**. Compare the 
 
 Extract coding calls from vcf files with **extract_coding.sh**.
 
-Calculate heterozygosity per population with **coding_tr_heterozygosity.sh** and **coding_tr_heterozygosity_runner.sh**
 
 Generating supplementary table 7 in **coding_region_intersect.ipynb**
 
