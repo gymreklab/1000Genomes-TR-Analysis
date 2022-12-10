@@ -5,9 +5,7 @@ Exon coding regions were downloaded from UCSC tables and were filtered with **pr
 1. Drop duplicated regions
 2. Genes located in chromosomes other than chr1-chr22
 
-Get coordinates of all TR regions in EnsembleTR output with **TR_coordinates.sh**.
-
-Intersect with coding regions using bedtools with **TR_coordinates.sh** 
+Get coordinates of all TR regions in EnsembleTR output and intersect with coding regions using bedtools with with **TR_coordinates.sh**.
 
 Finding TRs entirely in coding regions with **coding_region_intersect.ipynb**
 
