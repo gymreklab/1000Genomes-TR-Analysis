@@ -1,21 +1,18 @@
 ### TR coordinates and intersect with coding regions
 
-Coding regions were downloaded from UCSC tables and were filtered with **process_coding_regions.py** to remove the followings:
+Exon coding regions were downloaded from UCSC tables and were filtered with **process_coding_regions.py** to remove the followings:
 
 1. Drop duplicated regions
 2. Genes located in chromosomes other than chr1-chr22
 
-Get coordinates of all TR regions in EnsembleTR output with **TR_coordinates.sh**.
+Get coordinates of all TR regions in EnsembleTR output and intersect with coding regions using bedtools with with **TR_coordinates.sh**.
 
-Intersect with coding regions using bedtools with **TR_coordinates.sh** 
-
-Finding TRs entirely in coding regions with **overlap_finder.cpp**. Compare the results with overlaps found by bedtools in **coding_region_intersect.ipynb**
+Finding TRs entirely in coding regions with **coding_region_intersect.ipynb**
 
 ### Heterozygosity of coding TRs in different populations
 
 Extract coding calls from vcf files with **extract_coding.sh**.
 
-Calculate heterozygosity per population with **coding_tr_heterozygosity.sh** and **coding_tr_heterozygosity_runner.sh**
 
 Generating supplementary table 7 in **coding_region_intersect.ipynb**
 

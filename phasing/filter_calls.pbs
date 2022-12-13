@@ -1,0 +1,43 @@
+#!/bin/bash
+
+#PBS -N score_filter
+#PBS -l nodes=1:ppn=1
+#PBS -l walltime=20:00:00
+#PBS -o /projects/ps-gymreklab/helia/ensembl/1000Genomes-TR-Analysis/phasing/log
+#PBS -e /projects/ps-gymreklab/helia/ensembl/1000Genomes-TR-Analysis/phasing/log
+#PBS -A gymreklab-group
+#PBS -q hotel
+#PBS -V
+
+source /projects/ps-gymreklab/helia/ensembl/venv_3.9/bin/activate
+
+dir=/projects/ps-gymreklab/helia/ensembl/1000Genomes-TR-Analysis/phasing/filtered_calls
+
+# remove loci with more than 125 alt alleles as required by beagle
+#bcftools view -M125 /projects/ps-gymreklab/helia/ensembl/filtered_calls/chr"$chr"_MI_filtered.vcf.gz  --no-update \
+#-O z -o "$dir"/chr"$chr"_125.vcf.gz &&
+
+## Remove calls with score below 0.9
+#bcftools filter -S . -s "FILTER" -e 'FORMAT/SCORE<0.9' "$dir"/chr"$chr"_125.vcf.gz \
+# -O z -o "$dir"/chr"$chr"_score_filtered.vcf.gz &&
+
+#tabix -f -p vcf "$dir"/chr"$chr"_score_filtered.vcf.gz &&
+
+# Filter based on callrate
+#dumpSTR --vcf "$dir"/chr"$chr"_score_filtered.vcf.gz \
+#        --out "$dir"/chr"$chr"_phasing_filtered \
+#        --vcftype hipstr \
+#        --drop-filtered \
+#        --min-locus-callrate 0.8 &&
+#echo "dumped"
+
+#bgzip -f "$dir"/chr"$chr"_phasing_filtered.vcf
+#tabix -f -p vcf "$dir"/chr"$chr"_phasing_filtered.vcf.gz
+
+#rm "$dir"/chr"$chr"_125.vcf.gz* "$dir"/chr"$chr"_score_filtered.vcf.gz* "$dir"/chr"$chr"_phasing_filtered.loclog.tab "$dir"/chr"$chr"_phasing_filtered.samplog.tab
+
+
+bcftools view -c 1 "$dir"/chr"$chr"_phasing_filtered.vcf.gz --no-update -o "$dir"/chr"$chr"_polymorphic.vcf.gz -O z
+
+tabix -f -p vcf "$dir"/chr"$chr"_polymorphic.vcf.gz
+
