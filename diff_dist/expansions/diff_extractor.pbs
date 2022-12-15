@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#PBS -N diff_extract
+#PBS -l nodes=1:ppn=1
+#PBS -l walltime=2:00:00
+#PBS -o /projects/ps-gymreklab/helia/ensembl/experiments/charact/diff_dist/log
+#PBS -e /projects/ps-gymreklab/helia/ensembl/experiments/charact/diff_dist/log
+#PBS -A gymreklab-group
+#PBS -q hotel
+#PBS -V
+
+
+source /projects/ps-gymreklab/helia/ensembl/venv_3.9/bin/activate
+cd /projects/ps-gymreklab/helia/ensembl/experiments/charact/diff_dist/
+
+
+
+bcftools query -l /projects/ps-gymreklab/helia/ensembl/1000Genomes-TR-Analysis/phasing/filtered_calls/chr"$chr"_polymorphic.vcf.gz > diff/"$chr"_diff.txt
+
+bcftools query -f "%CHROM\t%POS\t%PERIOD\t%RU\t[%GB\t]\n" /projects/ps-gymreklab/helia/ensembl/1000Genomes-TR-Analysis/phasing/filtered_calls/chr"$chr"_polymorphic.vcf.gz >> diff/"$chr"_diff.txt
+
