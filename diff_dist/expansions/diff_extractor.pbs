@@ -15,7 +15,7 @@ cd /projects/ps-gymreklab/helia/ensembl/experiments/charact/diff_dist/
 
 
 
-bcftools query -l /projects/ps-gymreklab/helia/ensembl/1000Genomes-TR-Analysis/phasing/filtered_calls/chr"$chr"_polymorphic.vcf.gz > diff/"$chr"_diff.txt
+bcftools query -l /projects/ps-gymreklab/helia/ensembl/ensemble_out/ensemble_chr"$chr"_filtered.vcf.gz > diff/"$chr"_diff.txt
 
-bcftools query -f "%CHROM\t%POS\t%PERIOD\t%RU\t[%GB\t]\n" /projects/ps-gymreklab/helia/ensembl/1000Genomes-TR-Analysis/phasing/filtered_calls/chr"$chr"_polymorphic.vcf.gz >> diff/"$chr"_diff.txt
+bcftools query -f "%CHROM\t%POS\t%PERIOD\t%RU\t[%GB\t]\n" -i 'INFO/PERIOD!=1 & ALT!="."' /projects/ps-gymreklab/helia/ensembl/ensemble_out/ensemble_chr"$chr"_filtered.vcf.gz >> diff/"$chr"_diff.txt
 
