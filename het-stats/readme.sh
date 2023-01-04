@@ -18,7 +18,7 @@ do
     statSTR \
 	--vcf ${DATADIR}/ensemble_chr${chrom}_filtered.vcf.gz \
 	--vcftype hipstr \
-	--het --nalleles --nalleles-thresh 0.05 \
+	--het --nalleles --nalleles-thresh 0.01 \
 	--samples all_samples.txt,EUR_samples.txt,EAS_samples.txt,SAS_samples.txt,AMR_samples.txt,AFR_samples.txt,h3africa_samples.txt \
 	--sample-prefixes ALL,EUR,EAS,SAS,AMR,AFR,H3A \
 	--out chr${chrom}.stats
@@ -28,4 +28,4 @@ do
 done
 
 # Get motif info
-for chrom in $(seq 1 22); do bcftools query -f"%CHROM\t%POS\t%INFO/PERIOD\t%INFO/RU\n" ${DATADIR}/ensemble_chr${chrom}_filtered.vcf.gz; done > motif_info.tab
+#for chrom in $(seq 1 22); do bcftools query -f"%CHROM\t%POS\t%INFO/PERIOD\t%INFO/RU\n" ${DATADIR}/ensemble_chr${chrom}_filtered.vcf.gz; done > motif_info.tab
