@@ -1,11 +1,25 @@
 diff_dist/preprocessed_data/*.csv
 diff_dist/computed_stats/kruskal_coding.csv
 diff_dist/computed_stats/conover.csv
+diff_dist/expansions/*.csv
+
+
+# Sample names 
+het-stats/*samples.txt
+phasing/validation/*_names.txt
+
+# info
+het-stats/methods_*.txt
 
 # Generated files
 *.tab
 *pdfs/
 *freqs/
+*tables/
+*log/
+*.pdf
+*failed_MI/
+*result/
 
 # Data files
 *_cap_calls.txt
