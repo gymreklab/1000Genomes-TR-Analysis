@@ -6,7 +6,7 @@ diff_dist/computed_stats/conover.csv
 *.tab
 *pdfs/
 *freqs/
-
+*tables/
 # Data files
 *_cap_calls.txt
 
