@@ -23,7 +23,6 @@ def main():
     parser.add_argument("--min-maf", help="MAF threshold to check SNP", default=0.0, type=float)
     args = parser.parse_args()
     phased = args.phased_vcf
-    reference = args.ref_vcf
     outvcf = args.new_vcf
     if outvcf is None: outvcf = "/dev/stdout"
     samples_to_switch = {} # sample -> [total_het, total_switch]
@@ -37,7 +36,8 @@ def main():
     snp_counter = 0
     for target_record in target_reader:
         if min([target_record.aaf[0], 1-target_record.aaf[0]]) < args.min_maf: continue
-        if snp_counter > args.check_snps: break
+        if snp_counter > args.check_snps:
+           break
 #        print target_record.POS, snp_counter, target_record.aaf
         snp_counter += 1
         # Fetch corresponding record in ref vcf
@@ -63,13 +63,13 @@ def main():
         for sample in target_record:
             if sample.is_het:
                 if not ref_record.genotype(sample.sample).is_het:
-                    sys.stderr.write("WARNING: Site %s:%s not het in both VCFs. Skipping\n"%(target_record.CHROM, target_record.POS))
+                    #sys.stderr.write("WARNING: Site %s:%s not het in both VCFs. Skipping\n"%(target_record.CHROM, target_record.POS))
                     continue
                 samples_to_switch[sample.sample][0] += 1
                 # Look for sample in ref
                 if sample.gt_alleles[0] != ref_record.genotype(sample.sample).gt_alleles[0]:
                     samples_to_switch[sample.sample][1] += 1
-                    
+    print(f"switch rate for NA12878: {samples_to_switch['NA12878']}")
     # Get switch error rate per sample
     print("getting switch error per sample")
     sample_to_switch_rate = {}
