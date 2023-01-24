@@ -32,7 +32,7 @@ for gt in str_vector[9:]:
     else:
         gt = gt.split("|")
         gt = [int(x) for x in gt]
-        str_vector_reform.append(len(str_alleles[gt[0]]) + len(str_alleles[gt[1]]))
+        str_vector_reform.extend([len(str_alleles[gt[0]]), len(str_alleles[gt[1]])])
 
 if len(set(str_vector_reform)) == 1:
     eprint("Non polymorphic locus at " + str_vector[0] + "-" + str_vector[1])
@@ -53,7 +53,7 @@ for i in range(len(snps)):
         if "|" in gt:
             gt = gt.split("|")
             gt = [int(x) for x in gt]
-            snp_vector_reform.append(gt[0] + gt[1])
+            snp_vector_reform.extend([gt[0], gt[1]])
     if len(set(snp_vector_reform)) == 1:
         continue
     assert len(str_vector_reform) == len(snp_vector_reform), \
