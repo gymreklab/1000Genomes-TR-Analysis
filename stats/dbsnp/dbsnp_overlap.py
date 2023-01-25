@@ -10,6 +10,7 @@ import sys
 ref_addr = sys.argv[1]
 dbsnp_addr = sys.argv[2]
 str_addr = sys.argv[3]
+chrom = int(sys.argv[4])
 
 start = time.time()
 refs = utils.load_reference(ref_addr)
@@ -86,13 +87,9 @@ def process_chrom(chrom):
     snps = cyvcf2.VCF(dbsnp_addr)
     curr_STRs, curr_range, next_cyvcf2_str_var = get_next_strs(None, vcf)
 
-    with open(f'chr{chrom}_to_examine.tab', 'w') as to_examine, \
-            open(f'chr{chrom}_to_filter.tab', 'w') as to_filter, \
-            open(f'chr{chrom}_to_keep.tab', 'w') as to_keep:
+    with open(f'outputs/chr{chrom}_to_filter.tab', 'w') as to_filter:
         header = 'ref_start\tref\t[str_pos, repeat_unit/period]\tsnp_pos\tsnp_ref\tsnp_alt\n'
-        to_examine.write(header)
         to_filter.write(header)
-        to_keep.write(header)
         chrom_done = False
         for variant in snps:
             pos = variant.POS
@@ -133,73 +130,82 @@ def process_chrom(chrom):
                 else:
                     ref_seq += ref_chrom[idx - 1]
             out_str = f'{curr_range.start}\t{ref_seq}\t{print_STRs}\t{pos}\t{a1}\t{a2}\n'
-
-            if len(curr_STRs) > 1:
-                to_examine.write("len\t" + out_str)
-                continue
-
-            curr_STR = curr_STRs[0]
-            # no change in # bp can't be simple STR expansions or contractions
-            # (unless we're swapping from one STR to another, but there's only
-            # one STR in this region) so don't filter it
-            if len(a1) == len(a2):
-                #to_keep.write(out_str)
-                continue
-
-            # since this is a single STR, if the SNP is not in the bounds of the STR, keep it
-            if (pos + len(a1) - 1 < curr_STR[0] - 1 or
-                pos > curr_STR[0] + len(curr_STR[1])):
-                #to_keep.write(out_str)
-                continue
-
-            if repeat_unit is None:
-                to_examine.write("none\t" + out_str)
-                continue
-
-            # keep any alternate alleles which obviously insert or delete impurities
-            obvious_impurity = False
-            for char in a2:
-                if char not in repeat_unit and char not in a1:
-                    obvious_impurity = True
-                    break
-            for char in a1:
-                if char not in repeat_unit and char not in a2:
-                    obvious_impurity = True
-                    break
-            if obvious_impurity:
-                #to_keep.write(out_str)
-                continue
-
-            # deletions of pure repeats in the STR are contractions and should be filtered
-            # check for deletions where the first or the last characters match (for ease)
-            # they should be in the STR proper
-            if len(a2) == 1:
-                deleted = None
-                if a1[0] == a2 and pos >= curr_STR[0] -1:
-                    deleted = a1[1:]
-                elif a1[-1] == a2 and pos + len(a1) -1 <= curr_STR[0] + len(curr_STR[1]):
-                    deleted = a1[:-1]
-                if deleted is not None and is_pure_repeats(deleted, repeat_unit):
-                    # check if the deleted portion is pure repeat (don't worry
-                    # about correct rotation tho)
-                    to_filter.write(out_str)
+            
+            
+            for i in range(len(curr_STRs)):
+                STR = curr_STRs[i]
+                if (pos + len(a1) - 1 < STR[0] - 1 or pos > STR[0] + len(STR[1])):
                     continue
+                else:
+                    
+                    to_filter.write(f'{curr_range.start}\t{ref_seq}\t{print_STRs[i]}\t{pos}\t{a1}\t{a2}\n')
 
-            # insertions of pure repeats in the STR are expansions and should be filtered
-            # check for insertions where the first or the last characters match (for ease)
-            # they should be in the STR proper
-            if len(a1) == 1:
-                if a2[0] == a1 and pos >= curr_STR[0] -1:
-                    inserted = a2[1:]
-                elif a2[-1] == a1 and pos <= curr_STR[0] + len(curr_STR[1]):
-                    inserted = a2[:-1]
-                if inserted is not None and is_pure_repeats(inserted, repeat_unit):
-                    # check if the inserted portion is pure repeat (don't worry
-                    # about correct rotation tho)
-                    to_filter.write(out_str)
-                    continue
+#             if len(curr_STRs) > 1:
+#                 to_examine.write("len\t" + out_str)
+#                 continue
 
-            to_examine.write("other\t" + out_str)
+#             curr_STR = curr_STRs[0]
+#             # no change in # bp can't be simple STR expansions or contractions
+#             # (unless we're swapping from one STR to another, but there's only
+#             # one STR in this region) so don't filter it
+#             if len(a1) == len(a2):
+#                 to_keep.write(out_str)
+#                 continue
+
+#             # since this is a single STR, if the SNP is not in the bounds of the STR, keep it
+#             if (pos + len(a1) - 1 < curr_STR[0] - 1 or
+#                 pos > curr_STR[0] + len(curr_STR[1])):
+#                 to_keep.write(out_str)
+#                 continue
+
+#             if repeat_unit is None:
+#                 to_examine.write("none\t" + out_str)
+#                 continue
+
+#             # keep any alternate alleles which obviously insert or delete impurities
+#             obvious_impurity = False
+#             for char in a2:
+#                 if char not in repeat_unit and char not in a1:
+#                     obvious_impurity = True
+#                     break
+#             for char in a1:
+#                 if char not in repeat_unit and char not in a2:
+#                     obvious_impurity = True
+#                     break
+#             if obvious_impurity:
+#                 to_keep.write(out_str)
+#                 continue
+
+#             # deletions of pure repeats in the STR are contractions and should be filtered
+#             # check for deletions where the first or the last characters match (for ease)
+#             # they should be in the STR proper
+#             if len(a2) == 1:
+#                 deleted = None
+#                 if a1[0] == a2 and pos >= curr_STR[0] -1:
+#                     deleted = a1[1:]
+#                 elif a1[-1] == a2 and pos + len(a1) -1 <= curr_STR[0] + len(curr_STR[1]):
+#                     deleted = a1[:-1]
+#                 if deleted is not None and is_pure_repeats(deleted, repeat_unit):
+#                     # check if the deleted portion is pure repeat (don't worry
+#                     # about correct rotation tho)
+#                     to_filter.write(out_str)
+#                     continue
+
+#             # insertions of pure repeats in the STR are expansions and should be filtered
+#             # check for insertions where the first or the last characters match (for ease)
+#             # they should be in the STR proper
+#             if len(a1) == 1:
+#                 if a2[0] == a1 and pos >= curr_STR[0] -1:
+#                     inserted = a2[1:]
+#                 elif a2[-1] == a1 and pos <= curr_STR[0] + len(curr_STR[1]):
+#                     inserted = a2[:-1]
+#                 if inserted is not None and is_pure_repeats(inserted, repeat_unit):
+#                     # check if the inserted portion is pure repeat (don't worry
+#                     # about correct rotation tho)
+#                     to_filter.write(out_str)
+#                     continue
+
+#             to_examine.write("other\t" + out_str)
 
             # TODO: maybe don't filter partial contraction or insertion in the middle?
             # either full contraction/insertion in the middle or partial at the edges?
@@ -208,7 +214,7 @@ def process_chrom(chrom):
             # (i.e. CtCACACACA -> CaCACACACA)
 
 def main():
-    process_chrom(21)
+    process_chrom(chrom)
 
 if __name__ == '__main__':
     main()
