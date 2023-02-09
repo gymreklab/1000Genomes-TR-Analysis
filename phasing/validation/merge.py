@@ -10,12 +10,12 @@ samples = []
 pop_dict = {"EUR":"European", "AFR": "African"}
 pop_color = {'EUR':"blue", "AFR":"orange"}
 
-with open(pop + "_samples.txt") as f:
+with open(pop + "_names.txt") as f:
     for line in f:
         samples.append(line.strip())
 
 
-vcf_addr="/projects/ps-gymreklab/helia/ensembl/filtered_calls/chr" + chr + "_MI_filtered.vcf.gz"
+vcf_addr=f"/projects/ps-gymreklab/helia/ensembl/1000Genomes-TR-Analysis/phasing/snps/phased_strs_chr{chr}_normalized.vcf.gz"
 
 # Load all POS from original vcf file
 all_imputed = pd.read_csv(vcf_addr, header=None,delim_whitespace=True, usecols=[1],comment='#')

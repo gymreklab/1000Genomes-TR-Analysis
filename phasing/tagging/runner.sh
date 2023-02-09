@@ -1,9 +1,11 @@
+chr=$1
 pops=('AFR' 'EUR' 'EAS' 'AMR' 'SAS')
 
-for i in {1..9}
+for pop in "${pops[@]}"
 do
-  for pop in "${pops[@]}"
-  do
-	qsub tag_job.sh -v n=$i,pop=$pop
-  done
+	#qsub tag_job.sh -v n="0",pop=$pop,chr=$chr
+	for i in {1..9}
+	do
+		qsub tag_job.sh -v n=$i,pop=$pop,chr=$chr
+	done
 done

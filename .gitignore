@@ -2,7 +2,37 @@ diff_dist/preprocessed_data/*.csv
 diff_dist/computed_stats/kruskal_coding.csv
 diff_dist/computed_stats/conover.csv
 diff_dist/expansions/*.csv
+diff_dist/kruskal_analysis/*
 
+#Gene names
+diff_dist/expansions/Homo_sapiens.GRCh38.108.gtf
+
+#Expansion plots
+diff_dist/plots/*
+
+#Webstr genome annotations
+webstr/genome_annotations/*
+
+#Regions for phasing and tagging
+phasing/regions/*
+phasing/tagging/tag_regions/*
+
+#SNP files for 1000Genomes
+phasing/snps/*
+
+#Filtered calls for phasing
+phasing/filtered_calls/
+
+#Tagged snp outputs
+phasing/tagging/files/*
+
+#LOO output folders
+
+phasing/validation/diff*
+phasing/validation/imputed*
+
+# gnomad tabix files
+stats/dbsnp/*.tbi
 
 # Sample names 
 het-stats/*samples.txt

@@ -9,10 +9,9 @@ do
         esac
 done
 
-str=/projects/ps-gymreklab/helia/ensembl/filtered_calls/chr"$chr"_MI_filtered.vcf.gz
-procStr=/projects/ps-gymreklab/helia/ensembl/phasing_st/phased/beagle_out/"$chr"/merged/chr"$chr".phased.vcf.gz
-snp=/projects/ps-gymreklab/helia/ensembl/biallelic/snps/CCDG_14151_B01_GRM_WGS_2020-08-05_chr"$chr".filtered.shapeit2-duohmm-phased.vcf.gz
-
+str=/projects/ps-gymreklab/helia/ensembl/1000Genomes-TR-Analysis/phasing/filtered_calls/chr21_polymorphic.vcf.gz
+snp=/projects/ps-gymreklab/helia/ensembl/1000Genomes-TR-Analysis/phasing/snps/1kGP_high_coverage_Illumina.chr21.filtered.SNV_INDEL_SV_phased_panel.vcf.gz
+procStr=/projects/ps-gymreklab/helia/ensembl/1000Genomes-TR-Analysis/phasing/snps/chr21_phased_combined_sorted_snpstrs.vcf.gz
 
 SAMPLEID=$sss
 echo $SAMPLEID

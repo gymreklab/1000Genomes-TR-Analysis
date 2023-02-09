@@ -13,4 +13,4 @@ cd /projects/ps-gymreklab/helia/ensembl/1000Genomes-TR-Analysis/phasing/tagging
 source /projects/ps-gymreklab/helia/ensembl/venv_3.9/bin/activate
 
 
-./run_tagger.sh tag_regions/x0"$n".txt $pop > files/chr21_"$n"_"$pop"_tag_info_corrected.txt
+./run_tagger.sh tag_regions/chr"$chr"_0"$n".txt $pop $chr > files/chr"$chr"_"$n"_"$pop"_tag_info.txt
