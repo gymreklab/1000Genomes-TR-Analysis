@@ -59,7 +59,7 @@ def fix_freqs(freqs):
             updated_freqs[len(freq[0])] += float(freq[1])
     return dict(updated_freqs)
             
-pops = ['AFR', 'AMR', 'EAS', 'SAS', 'EUR']
+pops = ['AFR', 'AMR', 'EAS', 'SAS', 'EUR', 'H3Africa']
 addr = '/projects/ps-gymreklab/helia/ensembl/experiments/allele_freq/freqs/'
 all_pop_df = gene_info_grouped[['Chrom', 'Start','ID']]
 for pop in pops:

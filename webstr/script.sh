@@ -15,13 +15,13 @@ conda activate ensembl-vep
 
 webstr_addr="/projects/ps-gymreklab/helia/ensembl/1000Genomes-TR-Analysis/webstr"
 
-vep -i /projects/ps-gymreklab/helia/ensembl/ensemble_out/chrs/merged_chr"$chr"_sorted_ver2.vcf.gz \
+vep -i /projects/ps-gymreklab/helia/ensembl/filtered_calls/chr"$chr"_MI_filtered.vcf.gz \
     -o "$webstr_addr"/genome_annotations/gene_annotation_chr${chr}.txt \
     --force_overwrite -gtf /projects/ps-gymreklab/helia/ensembl/1000Genomes-TR-Analysis/webstr/genome_annotations/gencode.v22.annotation.gtf.gz \
     --fasta /projects/ps-gymreklab/helia/ensembl/hg38.analysisSet.fa
 
 
-bcftools query -f '%CHROM\t%POS\t%END\t%RU\n' /projects/ps-gymreklab/helia/ensembl/ensemble_out/chrs/merged_chr"$chr"_sorted_ver2.vcf.gz > "$webstr_addr"/tables/repeat_tables/ensemble_"$chr".txt
+bcftools query -f '%CHROM\t%POS\t%END\t%RU\n' /projects/ps-gymreklab/helia/ensembl/filtered_calls/chr"$chr"_MI_filtered.vcf.gz > "$webstr_addr"/tables/repeat_tables/ensemble_"$chr".txt
 
 
 python3 "$webstr_addr"/create_tables.py $chr

@@ -11,6 +11,7 @@ ref_addr = sys.argv[1]
 dbsnp_addr = sys.argv[2]
 str_addr = sys.argv[3]
 chrom = int(sys.argv[4])
+db = sys.argv[5] #dbsnp or gnomad
 
 start = time.time()
 refs = utils.load_reference(ref_addr)
@@ -42,7 +43,9 @@ def get_next_strs_helper(next_var, vcf):
         pos,
         next_var.REF[(pos-next_var.POS):(next_var.INFO['END']-next_var.POS+1)],
         next_var.INFO['PERIOD'],
-        next_var.ID
+        next_var.ID,
+        next_var.ALT,
+        next_var.end
     )]
     curr_range = range(pos - border, next_var.INFO['END'] + 1 + border)
     del next_var
@@ -60,7 +63,9 @@ def get_next_strs_helper(next_var, vcf):
                 pos,
                 var.REF[(pos-var.POS):(var.INFO['END']-var.POS+1)],
                 var.INFO['PERIOD'],
-                var.ID
+                var.ID,
+                var.ALT,
+                var.end
             ))
             curr_range = range(curr_range.start, var.INFO['END'] + 1 + border)
 
@@ -87,8 +92,9 @@ def process_chrom(chrom):
     snps = cyvcf2.VCF(dbsnp_addr)
     curr_STRs, curr_range, next_cyvcf2_str_var = get_next_strs(None, vcf)
 
-    with open(f'outputs/chr{chrom}_to_filter.tab', 'w') as to_filter:
-        header = 'ref_start\tref\t[str_pos, repeat_unit/period]\tsnp_pos\tsnp_ref\tsnp_alt\n'
+    with open(f'{db}_outputs/chr{chrom}_overlap.tab', 'w') as to_filter, \
+            open(f'{db}_outputs/chr{chrom}_pure_repeat_indel.tab', 'w') as pure:
+        header = 'ref_start\tref\talt\t[str_pos, repeat_unit/period]\tsnp_pos\tsnp_ref\tsnp_alt\tfound\talts\n'
         to_filter.write(header)
         chrom_done = False
         for variant in snps:
@@ -98,7 +104,7 @@ def process_chrom(chrom):
             if len(a1) == 0 or len(a2) == 0:
                 continue
             if len(a2) > 1:
-                raise ValueError("Multi-allelic region", pos)
+                continue
             a2 = a2[0]
             while curr_range.stop <= pos:
                 if next_cyvcf2_str_var is None:
@@ -124,27 +130,42 @@ def process_chrom(chrom):
                 else:
                     print_STRs.append((STR[0], f'period:{STR[2]}'))
             ref_seq = ''
+
             for idx in range(min(curr_range.start, pos), max(curr_range.stop, pos + len(a1))):
                 if pos <= idx <= end_pos_incl:
                     ref_seq += ref_chrom[idx - 1].lower()
                 else:
                     ref_seq += ref_chrom[idx - 1]
-            out_str = f'{curr_range.start}\t{ref_seq}\t{print_STRs}\t{pos}\t{a1}\t{a2}\n'
-            
-            
-            for i in range(len(curr_STRs)):
-                STR = curr_STRs[i]
-                if (pos + len(a1) - 1 < STR[0] - 1 or pos > STR[0] + len(STR[1])):
-                    continue
+
+            if len(curr_STRs) > 1:
+                continue
+
+            curr_STR = curr_STRs[0]
+            alt_seq = ''
+            alt_index = 0
+            for idx in range(min(curr_STR[0], pos), max(curr_STR[-1], pos + len(a2))):
+                if pos <= idx <= end_pos_incl:
+                    if alt_index >= len(a2):
+                        continue
+                    alt_seq += a2[alt_index]
+                    alt_index += 1
                 else:
-                    
-                    to_filter.write(f'{curr_range.start}\t{ref_seq}\t{print_STRs[i]}\t{pos}\t{a1}\t{a2}\n')
+                    alt_seq += ref_chrom[idx - 1]
 
-#             if len(curr_STRs) > 1:
-#                 to_examine.write("len\t" + out_str)
-#                 continue
+            found = alt_seq in curr_STR[4]
+            out_str = f'{curr_range.start}\t{ref_seq}\t{alt_seq}\t{print_STRs}\t{pos}\t{a1}\t{a2}\t{found}\t{curr_STR[4]}\n'
 
-#             curr_STR = curr_STRs[0]
+            if (pos + len(a1) - 1 < curr_STR[0] - 1 or pos > curr_STR[0] + len(curr_STR[1])):
+                continue
+            else:
+                to_filter.write(out_str)
+
+
+
+
+
+
+
 #             # no change in # bp can't be simple STR expansions or contractions
 #             # (unless we're swapping from one STR to another, but there's only
 #             # one STR in this region) so don't filter it
@@ -158,9 +179,8 @@ def process_chrom(chrom):
 #                 to_keep.write(out_str)
 #                 continue
 
-#             if repeat_unit is None:
-#                 to_examine.write("none\t" + out_str)
-#                 continue
+            if repeat_unit is None:
+                continue
 
 #             # keep any alternate alleles which obviously insert or delete impurities
 #             obvious_impurity = False
@@ -176,34 +196,35 @@ def process_chrom(chrom):
 #                 to_keep.write(out_str)
 #                 continue
 
-#             # deletions of pure repeats in the STR are contractions and should be filtered
-#             # check for deletions where the first or the last characters match (for ease)
-#             # they should be in the STR proper
-#             if len(a2) == 1:
-#                 deleted = None
-#                 if a1[0] == a2 and pos >= curr_STR[0] -1:
-#                     deleted = a1[1:]
-#                 elif a1[-1] == a2 and pos + len(a1) -1 <= curr_STR[0] + len(curr_STR[1]):
-#                     deleted = a1[:-1]
-#                 if deleted is not None and is_pure_repeats(deleted, repeat_unit):
-#                     # check if the deleted portion is pure repeat (don't worry
-#                     # about correct rotation tho)
-#                     to_filter.write(out_str)
-#                     continue
+            # deletions of pure repeats in the STR are contractions and should be filtered
+            # check for deletions where the first or the last characters match (for ease)
+            # they should be in the STR proper
+            if len(a2) == 1:
+                deleted = None
+                if a1[0] == a2 and pos >= curr_STR[0] -1:
+                    deleted = a1[1:]
+                elif a1[-1] == a2 and pos + len(a1) -1 <= curr_STR[0] + len(curr_STR[1]):
+                    deleted = a1[:-1]
+                if deleted is not None and is_pure_repeats(deleted, repeat_unit):
+                    # check if the deleted portion is pure repeat (don't worry
+                    # about correct rotation tho)
+                    pure.write(out_str)
+                    continue
 
-#             # insertions of pure repeats in the STR are expansions and should be filtered
-#             # check for insertions where the first or the last characters match (for ease)
-#             # they should be in the STR proper
-#             if len(a1) == 1:
-#                 if a2[0] == a1 and pos >= curr_STR[0] -1:
-#                     inserted = a2[1:]
-#                 elif a2[-1] == a1 and pos <= curr_STR[0] + len(curr_STR[1]):
-#                     inserted = a2[:-1]
-#                 if inserted is not None and is_pure_repeats(inserted, repeat_unit):
-#                     # check if the inserted portion is pure repeat (don't worry
-#                     # about correct rotation tho)
-#                     to_filter.write(out_str)
-#                     continue
+            # insertions of pure repeats in the STR are expansions and should be filtered
+            # check for insertions where the first or the last characters match (for ease)
+            # they should be in the STR proper
+            if len(a1) == 1:
+                inserted = None
+                if a2[0] == a1 and pos >= curr_STR[0] -1:
+                    inserted = a2[1:]
+                elif a2[-1] == a1 and pos <= curr_STR[0] + len(curr_STR[1]):
+                    inserted = a2[:-1]
+                if inserted is not None and is_pure_repeats(inserted, repeat_unit):
+                    # check if the inserted portion is pure repeat (don't worry
+                    # about correct rotation tho)
+                    pure.write(out_str)
+                    continue
 
 #             to_examine.write("other\t" + out_str)
 

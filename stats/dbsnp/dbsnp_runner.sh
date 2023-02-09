@@ -17,4 +17,4 @@ cd /projects/ps-gymreklab/helia/ensembl/1000Genomes-TR-Analysis/stats/dbsnp
 python3 dbsnp_overlap.py /projects/ps-gymreklab/helia/ensembl/hg38.analysisSet.fa \
 			 /projects/ps-gymreklab/helia/ensembl/experiments/dbsnp/snps/dbsnp_hg38_"$chr"_biallelic.vcf.gz \
        /projects/ps-gymreklab/helia/ensembl/ensemble_out/ensemble_chr"$chr"_filtered.vcf.gz \
-       $chr
+       $chr dbsnp
