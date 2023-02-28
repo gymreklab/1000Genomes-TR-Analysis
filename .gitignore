@@ -20,6 +20,9 @@ phasing/tagging/tag_regions/*
 #SNP files for 1000Genomes
 phasing/snps/*
 
+#Tag tables
+phasing/tagging/tag_files/*
+
 #Filtered calls for phasing
 phasing/filtered_calls/
 
