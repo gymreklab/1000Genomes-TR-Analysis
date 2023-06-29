@@ -75,7 +75,7 @@ out = df.progress_apply(lambda row: find_outlier(row), axis = 1)
 selected = df[['CHROM','POS','PERIOD','MOTIF']]
 selected[['outlier_threshold', 'AFR_freq', 'NON_AFR_freq']] = pd.DataFrame(list(out), columns = ['x','y','z'])
 selected = selected[((selected['AFR_freq'] > 0.01) | (selected['NON_AFR_freq'] > 0.01)) & (selected['outlier_threshold'] > 4)]
-selected = selected[(selected['AFR_freq'] > 10 * selected['NON_AFR_freq']) | (selected['NON_AFR_freq'] > 10 * selected['AFR_freq'])]
+#selected = selected[(selected['AFR_freq'] > 10 * selected['NON_AFR_freq']) | (selected['NON_AFR_freq'] > 10 * selected['AFR_freq'])]
 
 selected.to_csv(f"{chrom}_expansions.csv", index=False)
 
