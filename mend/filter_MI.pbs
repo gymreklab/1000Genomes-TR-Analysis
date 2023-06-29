@@ -15,6 +15,5 @@ OUTPUT_ADDR=/projects/ps-gymreklab/helia/ensembl/filtered_calls
 
 zcat $INPUT_ADDR | grep -Fwvf $MI_ADDR > $OUTPUT_ADDR/chr"$chr"_MI_filtered.vcf
 
-
 bgzip -f $OUTPUT_ADDR/chr"$chr"_MI_filtered.vcf
 tabix -f -p "vcf" $OUTPUT_ADDR/chr"$chr"_MI_filtered.vcf.gz
