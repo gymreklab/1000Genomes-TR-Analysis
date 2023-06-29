@@ -73,7 +73,7 @@ for variant in vcf:
                           variant.format("GB")[father_index]))
         MI_val = CheckMI(sample_GT, mother_GT, father_GT)
         min_score_gt = np.min([variant.format('SCORE')[ind] for ind in fam_indices])
-        items = [variant.CHROM, variant.POS, variant.INFO["RU"], family[0], variant.INFO["METHODS"], gbs, \
-                 MI_val, min_score_gt]
+        items = [variant.CHROM, variant.POS, variant.INFO["RU"], family[0], \
+                 MI_val, min_score_gt, gbs, variant.INFO["METHODS"]]
         sys.stdout.write("\t".join([str(item) for item in items])+"\n")
 

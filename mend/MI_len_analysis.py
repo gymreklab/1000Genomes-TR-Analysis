@@ -71,12 +71,12 @@ for variant in vcf:
             continue
         if IsRef(sample_GT) and IsRef(mother_GT) and IsRef(father_GT): # all homozygous ref
             continue
-        gbs=("%s,%s,%s"%(variant.format("GB")[sample_index],
-                          variant.format("GB")[mother_index],
-                          variant.format("GB")[father_index]))
+        #gbs=("%s,%s,%s"%(variant.format("GB")[sample_index],
+        #                  variant.format("GB")[mother_index],
+        #                  variant.format("GB")[father_index]))
         MI_val = CheckMI(variant.gt_bases[sample_index], variant.gt_bases[mother_index], variant.gt_bases[father_index])
         min_score_gt = np.min([variant.format('SCORE')[ind] for ind in fam_indices])
-        items = [variant.CHROM, variant.POS, variant.INFO["RU"], family[0], variant.INFO["METHODS"], gbs, \
+        items = [variant.CHROM, variant.POS, variant.INFO["RU"], family[0], \
                  MI_val, min_score_gt]
         sys.stdout.write("\t".join([str(item) for item in items])+"\n")
 
