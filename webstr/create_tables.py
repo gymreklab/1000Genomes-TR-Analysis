@@ -56,7 +56,7 @@ def fix_freqs(freqs):
         freqs = freqs.split(",")
         for freq in freqs:
             freq = freq.split(":")
-            updated_freqs[len(freq[0])] += float(freq[1])
+            updated_freqs[float(freq[0])] = float(freq[1])
     return dict(updated_freqs)
             
 pops = ['AFR', 'AMR', 'EAS', 'SAS', 'EUR', 'H3Africa']
@@ -71,7 +71,7 @@ for pop in pops:
     freq_het = freq_het[['chrom', 'start', 'ID', 'afreq-1', f'het-1', 'numcalled-1']]
     freq_het.columns = ['Chrom', 'Start', 'ID', f'afreq_{pop}', f'het_{pop}', f'numcalled_{pop}']
     freq_het = freq_het.drop_duplicates(subset='ID')
-    all_pop_df = pd.merge(all_pop_df, freq_het, on=['Chrom', 'Start','ID'], how='left')
+    all_pop_df = pd.merge(all_pop_df, freq_het, on=['Chrom', 'Start','ID'], how='outer')
     
     
 assert(len(gene_info_grouped) == len(all_pop_df))
