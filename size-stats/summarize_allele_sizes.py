@@ -8,8 +8,8 @@ import sys
 chrom = sys.argv[1]
 
 ########## Load sample info and get sample order #############
-kgsamples = pd.read_csv("/gymreklab-tscc/helia/TR_1000G/1000G.ped", delim_whitespace=True)
-h3afrsamples = pd.read_csv("/gymreklab-tscc/helia/H3Africa/names/H3A_Baylor_sample_country.txt", \
+kgsamples = pd.read_csv("/projects/ps-gymreklab/helia/TR_1000G/1000G.ped", delim_whitespace=True)
+h3afrsamples = pd.read_csv("/projects/ps-gymreklab/helia/H3Africa/names/H3A_Baylor_sample_country.txt", \
                            sep="\t", names=["SampleID","Country"])
 h3afrsamples["Superpopulation"] = "H3Africa"
 h3afrsamples["Population"] = h3afrsamples["Country"]
@@ -24,7 +24,7 @@ samples["Superpopulation"] = samples["Superpopulation"].apply(GetPopOrder)
 ############# Preprocess VCF ##########
 
 # Load VCF
-reader = cyvcf2.VCF("/gymreklab-tscc/helia/ensembl/ensemble_out/ensemble_chr%s_filtered.vcf.gz"%chrom)
+reader = cyvcf2.VCF("/projects/ps-gymreklab/helia/ensembl/ensemble_out/ensemble_chr%s_filtered.vcf.gz"%chrom)
 vcf_sample_list = reader.samples
 
 # Keep track of allele sizes for each sample
@@ -35,6 +35,7 @@ for s in vcf_sample_list:
     asize_hom[s] = {}
 
 numloc = 0
+sys.stderr.write("Reading records\n")
 for v in reader:
     if v.FILTER is not None: continue
     is_hom = (v.INFO["PERIOD"]==1)
@@ -54,6 +55,7 @@ for v in reader:
 
 ###### Output #########
 for s in vcf_sample_list:
+    sys.stderr.write(s+"\n")
     pop = samples[samples["SampleID"]==s]["Population"].values[0]
     spop = samples[samples["SampleID"]==s]["Superpopulation"].values[0]
     counts_other = []

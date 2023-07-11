@@ -9,7 +9,7 @@ import trtools.utils.tr_harmonizer
 chrom = sys.argv[1]
 
 # Load VCF
-reader = cyvcf2.VCF("/gymreklab-tscc/helia/ensembl/ensemble_out/ensemble_chr%s_filtered.vcf.gz"%chrom)
+reader = cyvcf2.VCF("/projects/ps-gymreklab/helia/ensembl/ensemble_out/ensemble_chr%s_filtered.vcf.gz"%chrom)
 
 for v in reader:
     if v.FILTER is not None: continue

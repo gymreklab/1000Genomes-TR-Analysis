@@ -1,4 +1,4 @@
-#!/bin/bash
+!/bin/bash
 
 # For each sample, count how many alleles match ref, ref+1, ref-1, etc.
 # Do separately for homopolymers and non-homopolymers
