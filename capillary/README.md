@@ -10,7 +10,7 @@ cat 1000g_loci.csv | awk -F"," '($3!="Chrom") {print $3 "\t" $4 "\t" $5}' > capi
 DATADIR=/projects/ps-gymreklab/helia/ensembl
 ./extract_wgs_calls.sh hipstr "$(ls ${DATADIR}/1000G_calls/hipstr/chrs/*.vcf.gz)"
 ./extract_wgs_calls.sh gangstr "$(ls ${DATADIR}/1000G_calls/gangstr/chrs/*corrected.vcf.gz)"
-./extract_wgs_calls.sh ensemble "$(ls ${DATADIR}/ensemble_out/*filtered.vcf.gz)"
+./extract_wgs_calls.sh ensemble "$(ls ${DATADIR}/filtered_calls/*filtered.vcf.gz)"
 
 # Merge and learn offsets
 ./merge_cap_wgs.py \
