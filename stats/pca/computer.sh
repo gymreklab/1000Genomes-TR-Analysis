@@ -13,6 +13,6 @@ source /projects/ps-gymreklab/helia/ensembl/venv_3.9/bin/activate
 
 
 
-python3 /projects/ps-gymreklab/helia/ensembl/1000Genomes-TR-Analysis/stats/pca/pca_plot_AFR.py &&
+python3 /projects/ps-gymreklab/helia/ensembl/1000Genomes-TR-Analysis/stats/pca/pca_compute.py &&
  
 echo "Done"

@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.decomposition import PCA
 from matplotlib import pyplot as plt
 import sys
-n_samples = 1241
+n_samples = 3550
 
 chrom = sys.argv[1]
 
@@ -35,7 +35,7 @@ def line_to_row(line):
 # reading input
 samples = []
 
-with open(f"/projects/ps-gymreklab/helia/ensembl/experiments/pca/mat_{chrom}_AFR.txt",'w') as f:
+with open(f"/projects/ps-gymreklab/helia/ensembl/experiments/pca/mat_{chrom}.txt",'w') as f:
     while True:
         line = sys.stdin.readline()
         if not line:
@@ -58,8 +58,8 @@ with open(f"/projects/ps-gymreklab/helia/ensembl/experiments/pca/mat_{chrom}_AFR
             f.write("\t".join(row))
             f.write("\n")
 
-df = pd.read_csv(f"/projects/ps-gymreklab/helia/ensembl/experiments/pca/mat_{chrom}_AFR.txt", sep = "\t")
+df = pd.read_csv(f"/projects/ps-gymreklab/helia/ensembl/experiments/pca/mat_{chrom}.txt", sep = "\t")
 sorted_df = df.sort_index(axis = 1)
-sorted_df.to_csv(f"/projects/ps-gymreklab/helia/ensembl/experiments/pca/mat_{chrom}_sorted_AFR.txt", sep = "\t", index=False)
+sorted_df.to_csv(f"/projects/ps-gymreklab/helia/ensembl/experiments/pca/mat_{chrom}_sorted.txt", sep = "\t", index=False)
 
 
