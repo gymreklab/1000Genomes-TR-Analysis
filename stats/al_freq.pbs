@@ -13,7 +13,7 @@
 source /projects/ps-gymreklab/helia/ensembl/venv_3.9/bin/activate
 
 time statSTR \
-	--vcf /projects/ps-gymreklab/helia/ensembl/filtered_calls/chr"$chr"_MI_filtered.vcf.gz  \
+	--vcf /projects/ps-gymreklab/helia/ensembl/ensemble_out/ensemble_chr"$chr"_filtered.vcf.gz  \
 	--vcftype hipstr \
 	--use-length \
 	--afreq \
@@ -24,5 +24,6 @@ time statSTR \
 	--mean \
 	--var \
 	--numcalled \
-	--out /projects/ps-gymreklab/helia/ensembl/experiments/allele_freq/freqs/freqs_chr"$chr" 
+	--out /projects/ps-gymreklab/helia/ensembl/experiments/allele_freq/freqs/freqs_chr"$chr"
 	#--samples /projects/ps-gymreklab/helia/ensembl/experiments/allele_freq/names/"$pop_name"_names.txt
+

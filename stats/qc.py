@@ -31,9 +31,9 @@ while True:
         alts = calls[4]
         ref = calls[3]
         pos = calls[1]
-        #period = int(calls[7].split(";")[2].replace("PERIOD=", ""))
-        #if period == 1:
-        #     continue
+        period = int(calls[7].split(";")[2].replace("PERIOD=", ""))
+        if period == 1:
+             continue
         calls = calls[9:]
         assert (len(calls) == len(samples))
         for i in range(len(calls)):
@@ -49,7 +49,7 @@ while True:
                     non_ref_samples[samples[i]] += 1
 
 print(ref_samples)
-with open(f"/projects/ps-gymreklab/helia/ensembl/experiments/stats/files/{pop}_{chrom}_homo.txt",'w') as f:
+with open(f"/projects/ps-gymreklab/helia/ensembl/experiments/stats/files/{pop}_{chrom}_no_homo.txt",'w') as f:
     for key in ref_samples:
         f.write(f"{key}\t{ref_samples[key]}\t{non_ref_samples[key]}\n")
 
