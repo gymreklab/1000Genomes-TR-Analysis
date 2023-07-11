@@ -71,9 +71,15 @@ for variant in vcf:
         gbs=("%s,%s,%s"%(variant.format("GB")[sample_index],
                           variant.format("GB")[mother_index],
                           variant.format("GB")[father_index]))
+        raw_input=("%s;%s;%s"%(variant.format("INPUTS")[sample_index],
+                          variant.format("INPUTS")[mother_index],
+                          variant.format("INPUTS")[father_index]))
+        genotype_support=("%s,%s,%s"%(variant.format("GTS")[sample_index],
+                          variant.format("GTS")[mother_index],
+                          variant.format("GTS")[father_index]))
         MI_val = CheckMI(sample_GT, mother_GT, father_GT)
         min_score_gt = np.min([variant.format('SCORE')[ind] for ind in fam_indices])
         items = [variant.CHROM, variant.POS, variant.INFO["RU"], family[0], \
-                 MI_val, min_score_gt, gbs, variant.INFO["METHODS"]]
+                 MI_val, min_score_gt, gbs, variant.INFO["METHODS"], raw_input, genotype_support]
         sys.stdout.write("\t".join([str(item) for item in items])+"\n")
 
