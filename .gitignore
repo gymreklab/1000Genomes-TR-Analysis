@@ -4,6 +4,12 @@ diff_dist/computed_stats/conover.csv
 diff_dist/expansions/*.csv
 diff_dist/kruskal_analysis/*
 
+#tables
+capillary/TableS4*
+figure-notebooks-round2/data_longest_stretch.csv
+
+
+
 #Gene names
 diff_dist/expansions/Homo_sapiens.GRCh38.108.gtf
 
@@ -45,6 +51,8 @@ phasing/validation/*_names.txt
 het-stats/methods_*.txt
 
 # Generated files
+*.txt
+*.png
 *.tab
 *pdfs/
 *freqs/
