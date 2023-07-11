@@ -6,8 +6,8 @@ import pandas as pd
 import sys
 
 ########## Load sample info and get sample order #############
-kgsamples = pd.read_csv("/gymreklab-tscc/helia/TR_1000G/1000G.ped", delim_whitespace=True)
-h3afrsamples = pd.read_csv("/gymreklab-tscc/helia/H3Africa/names/H3A_Baylor_sample_country.txt", \
+kgsamples = pd.read_csv("/projects/ps-gymreklab/helia/TR_1000G/1000G.ped", delim_whitespace=True)
+h3afrsamples = pd.read_csv("/projects/ps-gymreklab/helia/H3Africa/names/H3A_Baylor_sample_country.txt", \
                            sep="\t", names=["SampleID","Country"])
 h3afrsamples["Superpopulation"] = "H3Africa"
 h3afrsamples["Population"] = h3afrsamples["Country"]
@@ -35,7 +35,7 @@ maxloc = np.inf # for debugging
 numloc = 0
 
 # Go through VCF
-reader = cyvcf2.VCF("/gymreklab-tscc/helia/ensembl/ensemble_out/ensemble_chr21_filtered.vcf.gz")
+reader = cyvcf2.VCF("/projects/ps-gymreklab/helia/ensembl/ensemble_out/ensemble_chr21_filtered.vcf.gz")
 vcf_sample_list = reader.samples
 sample_order = dict(zip(sample_list, [vcf_sample_list.index(s) for s in sample_list]))
 sample_pop = dict(zip(list(samples["SampleID"]), list(samples["Population"])))
