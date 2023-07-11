@@ -1,17 +1,17 @@
 #!/bin/bash
 
 # Set up sample lists
-KGFILE=/gymreklab-tscc/helia/TR_1000G/1000G.ped
+KGFILE=/projects/ps-gymreklab/helia/TR_1000G/1000G.ped
 cat ${KGFILE} | cut -d' ' -f 2 | grep -v Sample > all_samples.txt
 for pop in EUR EAS SAS AMR AFR
 do
     cat ${KGFILE} | grep -w ${pop} | cut -d' ' -f 2 > ${pop}_samples.txt
 done
-cat /gymreklab-tscc/helia/H3Africa/names/H3A_Baylor_sample_country.txt | \
+cat /projects/ps-gymreklab/helia/H3Africa/names/H3A_Baylor_sample_country.txt | \
     cut -f 1 > h3africa_samples.txt
 
 # Compute het, n_alleles for all and for each superpopulation
-DATADIR=/gymreklab-tscc/helia/ensembl/ensemble_out
+DATADIR=/projects/ps-gymreklab/helia/ensembl/ensemble_out
 for chrom in $(seq 1 22)
 do
     echo $chrom
