@@ -25,6 +25,7 @@ from utils import *
 ############### Load HipSTR, GangSTR, EnsembleTR calls ###########
 loci = pd.read_csv("1000g_loci.csv")
 loci = loci.drop_duplicates(keep='first')
+
 samples = [item.strip() for item in open("samples.txt", "r").readlines()]
 
 gangstr_df = load_vcf(gangstr_file, samples, "GangSTR", gang_dict, loci)
@@ -36,6 +37,7 @@ cap = pd.read_csv(psizes_file)
 cap = pd.melt(cap, id_vars=["PrimerID","RefProductSize"], value_vars=samples, \
         var_name="sample", value_name="Prd")
 cap["batch"] = cap.apply(lambda x: "PG" if x["sample"] in pg_samples else "Coriell", 1)
+print("Found %s loci in cap"%len(set(cap["PrimerID"])))
 
 ############### Learn offsets ###########
 offsets = learn_offsets(cap, hipstr_df, gangstr_df, loci)
@@ -79,5 +81,3 @@ merged_asuragen["match.gangstr"] = GetMatch(merged_asuragen["GangSTR"], merged_a
 merged_asuragen["match.ensemble"] = GetMatch(merged_asuragen["Ensemble"], merged_asuragen["Cap.Binned"])
 
 merged_asuragen.sort_values(["PrimerID","SampleID"])[printcols].to_csv("TableS4-WGSvsCapillary-Asuragen.csv", index=False)
-
-
