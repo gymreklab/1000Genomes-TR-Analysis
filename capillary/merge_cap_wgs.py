@@ -32,6 +32,8 @@ gangstr_df = load_vcf(gangstr_file, samples, "GangSTR", gang_dict, loci)
 hipstr_df = load_vcf(hipstr_file, samples, "HipSTR", hip_dict, loci)
 ensemble_df = load_vcf(ensemble_file, samples, "Ensemble", ensemble_dict, loci)
 
+print(ensemble_df[ensemble_df["PrimerID"]=="HTT"])
+
 ############### Load capillary ###########
 cap = pd.read_csv(psizes_file)
 cap = pd.melt(cap, id_vars=["PrimerID","RefProductSize"], value_vars=samples, \
